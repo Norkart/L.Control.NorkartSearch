@@ -5,17 +5,26 @@ var setupMap = require('./map.js');
 var ReactDOM = require('react-dom');
 var SearchBox = require('./SearchBox.jsx');
 
+L.Icon.Default.imagePath = 'bundles/images/';
+
 var MyMap = React.createClass({
 
     componentDidMount: function () {
         var div = ReactDOM.findDOMNode(this);
-        setupMap(div, '84225b7d-7219-4fe2-aa96-f32af3d81c26');
+        this.map = setupMap(div, this.props.apiKey);
+    },
+
+    hitSelected: function (hit) {
+        console.log("selected hit", hit);
+        var pos = [hit.pos.Y, hit.pos.X];
+        L.marker(pos).addTo(this.map);
+        this.map.setView(pos, 16);
     },
 
     render: function () {
         return (
             <div className="map">
-                <SearchBox />
+                <SearchBox apiKey={this.props.apiKey} hitSelected={this.hitSelected} />
             </div>
         );
     }

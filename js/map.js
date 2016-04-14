@@ -17,6 +17,7 @@ function setupMap(div, apiKey) {
         mapType: TileLayer.Type.VECTOR,
         apikey: apiKey
     }).addTo(map);
+    return map;
 }
 
 

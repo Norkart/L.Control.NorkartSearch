@@ -2,17 +2,33 @@
 
 var React = require('react');
 var _ = require('underscore');
+var $ = require('jquery');
 
-function search(text, callback) {
-    if (text === '') {
-        callback(null, []);
-    }
-    var len = Math.floor(Math.random() * 10) + 1;
-    var hits = _.map(_.range(0, len), function (i) {
-        return {'text': text + ' ' + i};
+
+
+function fixResults(res) {
+    return _.map(res.Options, function (option) {
+        return {text: option.Text, id: option.PayLoad.AdresseId, pos: option.PayLoad.Posisjon};
     });
+}
 
-    callback(null, hits);
+function search(text, token, callback) {
+    var url = 'http://www.webatlas.no:80/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query=' + text;
+    $.ajax({
+        url: url,
+        success: function (res) {
+            callback(null, fixResults(res));
+        },
+        headers: {
+            'Accept': 'application/json; charset=utf-8',
+            'X-WAAPI-Token': token
+        },
+        error: function (e) {
+            //onError();
+            console.error(e);
+        },
+        dataType: 'json'
+    });
 }
 
 
@@ -44,6 +60,7 @@ var HitList = React.createClass({
 
     hitSelected: function (selectedHit) {
         this.setState({selectedHit: selectedHit});
+        this.props.hitSelected(selectedHit);
     },
 
     render: function () {
@@ -61,7 +78,7 @@ var HitList = React.createClass({
             return null;
         }
         var hitElements = _.map(hits, function (hit) {
-            return (<HitElement hit={hit} key={hit.text} hitSelected={this.hitSelected}/>);
+            return (<HitElement hit={hit} key={hit.id} hitSelected={this.hitSelected}/>);
         }, this);
         return (
             <div className="list-group">
@@ -84,11 +101,10 @@ var SearchBox = React.createClass({
     onChange: function (e) {
         var value = e.target.value;
         this.setState({text: value});
-        search(value, this.gotResults);
+        search(value, this.props.apiKey, this.gotResults);
     },
 
     render: function () {
-        console.log("!!", this.state.hits);
         return (
             <div className="searchBox">
                 <div className="form-group">
@@ -99,7 +115,7 @@ var SearchBox = React.createClass({
                         className="form-control"
                         id="exampleInputEmail1"
                         placeholder="Søk her" />
-                        <HitList hits={this.state.hits} />
+                        <HitList hits={this.state.hits} hitSelected={this.props.hitSelected}/>
                   </div>
             </div>
         );

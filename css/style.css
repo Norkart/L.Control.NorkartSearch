@@ -21,6 +21,6 @@
     margin-left: -250px;
 }
 
-.form-group {
+.form-group, .list-group {
     margin-bottom: 0;
 }
