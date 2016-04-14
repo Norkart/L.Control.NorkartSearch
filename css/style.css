@@ -1,0 +1,26 @@
+.header {
+    height: 50px;
+}
+
+.map {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+}
+
+.searchBox {
+    z-index: 2001;
+    position: fixed;
+    background: #fff;
+    width: 500px;
+    left: 50%;
+    
+    margin-left: -250px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
