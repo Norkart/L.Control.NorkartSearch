@@ -509,7 +509,7 @@
 
 
 	// module
-	exports.push([module.id, ".header {\r\n    height: 50px;\r\n}\r\n\r\n.map {\r\n    position: fixed;\r\n    top: 50px;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background: #fff;\r\n}\r\n\r\n.searchBox {\r\n    z-index: 2001;\r\n    position: fixed;\r\n    background: #fff;\r\n    width: 500px;\r\n    left: 50%;\r\n    \r\n    margin-left: -250px;\r\n}\r\n\r\n.form-group, .list-group {\r\n    margin-bottom: 0;\r\n}\r\n\r\n.search {\r\n    margin-right: 50px !important;\r\n}\r\n\r\n.icon {\r\n    float: left;\r\n    width: 50px;\r\n    background: red;\r\n}", ""]);
+	exports.push([module.id, ".header {\r\n    height: 50px;\r\n}\r\n\r\n.map {\r\n    position: fixed;\r\n    top: 50px;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background: #fff;\r\n}\r\n\r\n.searchBox {\r\n    z-index: 2001;\r\n    position: fixed;\r\n    background: #fff;\r\n    width: 500px;\r\n    left: 50%;\r\n    \r\n    margin-left: -250px;\r\n}\r\n\r\n.form-group, .list-group {\r\n    margin-bottom: 0;\r\n}\r\n\r\n.icon {\r\n    float: left;\r\n    width: 50px;\r\n    background: red;\r\n}", ""]);
 
 	// exports
 
@@ -20138,43 +20138,10 @@
 	var React = __webpack_require__(160);
 	var setupMap = __webpack_require__(174);
 	var ReactDOM = __webpack_require__(14);
-	var SearchBox = __webpack_require__(184);
-	var _ = __webpack_require__(185);
+
+	__webpack_require__(189);
 
 	L.Icon.Default.imagePath = 'bundles/images/';
-
-	L.Control.Search = L.Control.extend({
-	    options: {
-	        position: 'topright'
-	    },
-
-	    onAdd: function (map) {
-	        var className = 'leaflet-control-search',
-	            container = L.DomUtil.create('div', className),
-	            options = this.options;
-	        this.map = map;
-	        ReactDOM.render(React.createElement(SearchBox, { apiKey: options.apiKey, hitSelected: _.bind(this._hitSelected, this) }), container);
-
-	        return container;
-	    },
-
-	    _hitSelected: function (hit) {
-	        var pos = [hit.pos.Y, hit.pos.X];
-	        if (this.marker) {
-	            this.map.removeLayer(this.marker);
-	        }
-	        this.marker = L.marker(pos).addTo(this.map);
-	        this.map.setView(pos, 16);
-	    },
-
-	    onRemove: function (map) {}
-	});
-
-	// @factory L.control.scale(options?: Control.Scale options)
-	// Creates an scale control with the given options.
-	L.control.search = function (options) {
-	    return new L.Control.Search(options);
-	};
 
 	var MyMap = React.createClass({
 	    displayName: 'MyMap',
@@ -29776,7 +29743,7 @@
 	            null,
 	            React.createElement(
 	                'div',
-	                { className: 'form-group' },
+	                { className: 'form-group  has-feedback' },
 	                React.createElement('input', {
 	                    onChange: this.onChange,
 	                    type: 'text',
@@ -29784,8 +29751,13 @@
 	                    className: 'form-control search',
 	                    id: 'exampleInputEmail1',
 	                    placeholder: 'Søk her' }),
-	                React.createElement(HitList, { hits: this.state.hits, hitSelected: this.props.hitSelected })
-	            )
+	                React.createElement(
+	                    'span',
+	                    { className: 'form-control-feedback' },
+	                    '!!'
+	                )
+	            ),
+	            React.createElement(HitList, { hits: this.state.hits, hitSelected: this.props.hitSelected })
 	        );
 	    }
 	});
@@ -41229,6 +41201,49 @@
 	return jQuery;
 	}));
 
+
+/***/ },
+/* 188 */,
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var L = __webpack_require__(182);
+	var React = __webpack_require__(160);
+	var ReactDOM = __webpack_require__(14);
+	var _ = __webpack_require__(185);
+
+	var SearchBox = __webpack_require__(184);
+
+	L.Control.Search = L.Control.extend({
+
+	    options: {
+	        position: 'topright'
+	    },
+
+	    onAdd: function (map) {
+	        var className = 'leaflet-control-search',
+	            container = L.DomUtil.create('div', className),
+	            options = this.options;
+	        this.map = map;
+	        ReactDOM.render(React.createElement(SearchBox, { apiKey: options.apiKey, hitSelected: _.bind(this._hitSelected, this) }), container);
+	        return container;
+	    },
+
+	    _hitSelected: function (hit) {
+	        var pos = [hit.pos.Y, hit.pos.X];
+	        if (this.marker) {
+	            this.map.removeLayer(this.marker);
+	        }
+	        this.marker = L.marker(pos).addTo(this.map);
+	        this.map.setView(pos, 16);
+	    }
+	});
+
+	L.control.search = function (options) {
+	    return new L.Control.Search(options);
+	};
 
 /***/ }
 /******/ ]);
