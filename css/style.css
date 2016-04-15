@@ -24,3 +24,13 @@
 .form-group, .list-group {
     margin-bottom: 0;
 }
+
+.search {
+    margin-right: 50px !important;
+}
+
+.icon {
+    float: left;
+    width: 50px;
+    background: red;
+}

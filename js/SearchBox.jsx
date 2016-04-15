@@ -78,13 +78,13 @@ var SearchBox = React.createClass({
 
     render: function () {
         return (
-            <div className="searchBox">
+            <div>
                 <div className="form-group">
                     <input
                         onChange={this.onChange}
                         type="text"
                         value={this.state.text}
-                        className="form-control"
+                        className="form-control search"
                         id="exampleInputEmail1"
                         placeholder="Søk her" />
                         <HitList hits={this.state.hits} hitSelected={this.props.hitSelected}/>

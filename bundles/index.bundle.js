@@ -52,7 +52,6 @@
 	var ReactDOM = __webpack_require__(14);
 	var React = __webpack_require__(160);
 	var config = __webpack_require__(172);
-
 	var MyMap = __webpack_require__(173);
 
 	ReactDOM.render(React.createElement(MyMap, { apiKey: config.apiKey }), document.getElementById('map'));
@@ -510,7 +509,7 @@
 
 
 	// module
-	exports.push([module.id, ".header {\r\n    height: 50px;\r\n}\r\n\r\n.map {\r\n    position: fixed;\r\n    top: 50px;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background: #fff;\r\n}\r\n\r\n.searchBox {\r\n    z-index: 2001;\r\n    position: fixed;\r\n    background: #fff;\r\n    width: 500px;\r\n    left: 50%;\r\n    \r\n    margin-left: -250px;\r\n}\r\n\r\n.form-group, .list-group {\r\n    margin-bottom: 0;\r\n}", ""]);
+	exports.push([module.id, ".header {\r\n    height: 50px;\r\n}\r\n\r\n.map {\r\n    position: fixed;\r\n    top: 50px;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background: #fff;\r\n}\r\n\r\n.searchBox {\r\n    z-index: 2001;\r\n    position: fixed;\r\n    background: #fff;\r\n    width: 500px;\r\n    left: 50%;\r\n    \r\n    margin-left: -250px;\r\n}\r\n\r\n.form-group, .list-group {\r\n    margin-bottom: 0;\r\n}\r\n\r\n.search {\r\n    margin-right: 50px !important;\r\n}\r\n\r\n.icon {\r\n    float: left;\r\n    width: 50px;\r\n    background: red;\r\n}", ""]);
 
 	// exports
 
@@ -20140,8 +20139,42 @@
 	var setupMap = __webpack_require__(174);
 	var ReactDOM = __webpack_require__(14);
 	var SearchBox = __webpack_require__(184);
+	var _ = __webpack_require__(185);
 
 	L.Icon.Default.imagePath = 'bundles/images/';
+
+	L.Control.Search = L.Control.extend({
+	    options: {
+	        position: 'topright'
+	    },
+
+	    onAdd: function (map) {
+	        var className = 'leaflet-control-search',
+	            container = L.DomUtil.create('div', className),
+	            options = this.options;
+	        this.map = map;
+	        ReactDOM.render(React.createElement(SearchBox, { apiKey: options.apiKey, hitSelected: _.bind(this._hitSelected, this) }), container);
+
+	        return container;
+	    },
+
+	    _hitSelected: function (hit) {
+	        var pos = [hit.pos.Y, hit.pos.X];
+	        if (this.marker) {
+	            this.map.removeLayer(this.marker);
+	        }
+	        this.marker = L.marker(pos).addTo(this.map);
+	        this.map.setView(pos, 16);
+	    },
+
+	    onRemove: function (map) {}
+	});
+
+	// @factory L.control.scale(options?: Control.Scale options)
+	// Creates an scale control with the given options.
+	L.control.search = function (options) {
+	    return new L.Control.Search(options);
+	};
 
 	var MyMap = React.createClass({
 	    displayName: 'MyMap',
@@ -20150,21 +20183,11 @@
 	    componentDidMount: function () {
 	        var div = ReactDOM.findDOMNode(this);
 	        this.map = setupMap(div, this.props.apiKey);
-	    },
-
-	    hitSelected: function (hit) {
-	        console.log("selected hit", hit);
-	        var pos = [hit.pos.Y, hit.pos.X];
-	        L.marker(pos).addTo(this.map);
-	        this.map.setView(pos, 16);
+	        L.control.search({ apiKey: this.props.apiKey }).addTo(this.map);
 	    },
 
 	    render: function () {
-	        return React.createElement(
-	            'div',
-	            { className: 'map' },
-	            React.createElement(SearchBox, { apiKey: this.props.apiKey, hitSelected: this.hitSelected })
-	        );
+	        return React.createElement('div', { className: 'map' });
 	    }
 	});
 
@@ -29667,32 +29690,7 @@
 
 	var React = __webpack_require__(160);
 	var _ = __webpack_require__(185);
-	var $ = __webpack_require__(186);
-
-	function fixResults(res) {
-	    return _.map(res.Options, function (option) {
-	        return { text: option.Text, id: option.PayLoad.AdresseId, pos: option.PayLoad.Posisjon };
-	    });
-	}
-
-	function search(text, token, callback) {
-	    var url = 'http://www.webatlas.no:80/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query=' + text;
-	    $.ajax({
-	        url: url,
-	        success: function (res) {
-	            callback(null, fixResults(res));
-	        },
-	        headers: {
-	            'Accept': 'application/json; charset=utf-8',
-	            'X-WAAPI-Token': token
-	        },
-	        error: function (e) {
-	            //onError();
-	            console.error(e);
-	        },
-	        dataType: 'json'
-	    });
-	}
+	var search = __webpack_require__(186);
 
 	var HitElement = React.createClass({
 	    displayName: 'HitElement',
@@ -29775,7 +29773,7 @@
 	    render: function () {
 	        return React.createElement(
 	            'div',
-	            { className: 'searchBox' },
+	            null,
 	            React.createElement(
 	                'div',
 	                { className: 'form-group' },
@@ -29783,7 +29781,7 @@
 	                    onChange: this.onChange,
 	                    type: 'text',
 	                    value: this.state.text,
-	                    className: 'form-control',
+	                    className: 'form-control search',
 	                    id: 'exampleInputEmail1',
 	                    placeholder: 'Søk her' }),
 	                React.createElement(HitList, { hits: this.state.hits, hitSelected: this.props.hitSelected })
@@ -31350,6 +31348,42 @@
 
 /***/ },
 /* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _ = __webpack_require__(185);
+	var $ = __webpack_require__(187);
+
+	function fixResults(res) {
+	    return _.map(res.Options, function (option) {
+	        return { text: option.Text, id: option.PayLoad.AdresseId, pos: option.PayLoad.Posisjon };
+	    });
+	}
+
+	function search(text, token, callback) {
+	    var url = 'http://www.webatlas.no:80/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query=' + text;
+	    $.ajax({
+	        url: url,
+	        success: function (res) {
+	            callback(null, fixResults(res));
+	        },
+	        headers: {
+	            'Accept': 'application/json; charset=utf-8',
+	            'X-WAAPI-Token': token
+	        },
+	        error: function (e) {
+	            //onError();
+	            console.error(e);
+	        },
+	        dataType: 'json'
+	    });
+	}
+
+	module.exports = search;
+
+/***/ },
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
