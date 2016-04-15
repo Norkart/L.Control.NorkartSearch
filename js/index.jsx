@@ -5,7 +5,6 @@ require('./../css/style.css');
 var ReactDOM = require('react-dom');
 var React = require('react');
 var config = require('./config');
-
 var MyMap = require('./MyMap.jsx');
 
 ReactDOM.render(

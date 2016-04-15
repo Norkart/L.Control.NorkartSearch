@@ -20,5 +20,4 @@ function setupMap(div, apiKey) {
     return map;
 }
 
-
 module.exports = setupMap;

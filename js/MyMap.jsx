@@ -15,7 +15,6 @@ var MyMap = React.createClass({
     },
 
     hitSelected: function (hit) {
-        console.log("selected hit", hit);
         var pos = [hit.pos.Y, hit.pos.X];
         L.marker(pos).addTo(this.map);
         this.map.setView(pos, 16);
