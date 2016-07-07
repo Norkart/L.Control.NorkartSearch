@@ -4,6 +4,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var _ = require('underscore');
 
+require('./searchplugin.css');
+
 var SearchBox = require('./SearchBox.jsx');
 
 L.Control.Search = L.Control.extend({
@@ -18,7 +20,7 @@ L.Control.Search = L.Control.extend({
             options = this.options;
         this.map = map;
         ReactDOM.render(
-            <SearchBox apiKey={options.apiKey} hitSelected={_.bind(this._hitSelected, this)} />,
+            <SearchBox NkAuth={options.NkAuth} apiKey={options.apiKey} hitSelected={_.bind(this._hitSelected, this)} />,
             container
         );
         return container;

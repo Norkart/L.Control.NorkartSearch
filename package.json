@@ -20,12 +20,14 @@
   },
   "dependencies": {
     "@norkart/bootstrap-override": "^1.0.0",
+    "@norkart/ikoner": "^3.0.1",
+    "@norkart/norkartidjs": "^1.0.7",
     "bootstrap": "^3.3.6",
-    "jquery": "^2.2.3",
     "leaflet": "^0.7.7",
     "leaflet-webatlastile": "^0.1.0",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
+    "reqwest": "^2.0.5",
     "underscore": "^1.8.3"
   }
 }

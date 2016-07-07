@@ -4,7 +4,8 @@ var path = require('path');
 'use strict';
 module.exports = {
     entry: {
-        index: './js/index.jsx'
+        token: './js/token.jsx',
+        norkartid: './js/norkartid.jsx'
     },
     output: {
         path: path.join(__dirname, 'bundles'),
