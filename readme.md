@@ -54,8 +54,9 @@ Install:
 
 In code:
 
-    require('leaflet-norkartsearch ');
+    require('leaflet-norkartsearch');
 
 
 ### Demo
 
+    See [https://norkart.github.io/L.Control.NorkartSearch/demo/] for a simple example
