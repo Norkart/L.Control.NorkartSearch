@@ -1,6 +1,6 @@
 {
-  "name": "leaflet-norkartsearch",
-  "version": "1.0.0",
+  "name": "@norkart/leaflet-norkartsearch",
+  "version": "1.0.1",
   "description": "leaflet plugin for using the address search from Norkart. Requires an API-key.",
   "main": "dist/L.Control.NorkartSearch.js",
   "scripts": {
@@ -25,8 +25,8 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "leaflet": "^0.7.7",
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0",
     "reqwest": "^2.0.5"
   }
 }
