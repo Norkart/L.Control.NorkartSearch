@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 
 require('./searchplugin.css');
 
-var SearchBox = require('./SearchBox.jsx');
+var SearchBox = require('./SearchBox');
 
 L.Control.NorkartSearch = L.Control.extend({
 
