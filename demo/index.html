@@ -49,7 +49,9 @@
                 apiKey: apiKey
             }).addTo(map);
 
-            map.on('search:select', console.log);
+            map.on('search:select', function (e) {
+                console.log(e);
+            });
 
         </script>
     </body>
