@@ -1,9 +1,9 @@
 'use strict';
 
 var React = require('react');
-var _ = require('underscore');
+
 var search = require('./searchFunction');
-var NKIcon = require('@norkart/ikoner');
+var SearchIcon = require('./SearchIcon');
 
 function searchAppBackend(value, auth, gotResults) {
     auth.getToken(function (err, token) {
@@ -46,29 +46,29 @@ var HitElement = React.createClass({
 var HitList = React.createClass({
 
     render: function () {
-        var hits = _.map(this.props.hits, function (hit, idx) {
+        if (!this.props.hits.length) {
+            return null;
+        }
+        var hits = this.props.hits.map(function (hit, idx) {
             return {
-                id: hit.id,
-                text: hit.text,
+                id: hit.Id,
+                text: hit.Text,
                 index: idx,
                 hover: idx === this.props.hoverIndex,
                 selected: idx === this.props.selectedIndex
             };
-        }, this);
+        }.bind(this));
 
-        if (!hits.length) {
-            return null;
-        }
         return (
             <div className="list-group result-list">
-                {_.map(hits, function (hit) {
+                {hits.map(function (hit) {
                     return (
                         <HitElement
                             key={hit.id}
                             hit={hit}
                             hitSelected={this.props.hitSelected}/>
                     );
-                }, this)}
+                }.bind(this))}
             </div>
         );
     }
@@ -76,9 +76,14 @@ var HitList = React.createClass({
 
 var SearchBox = React.createClass({
 
+    getDefaultProps: function () {
+        return {placeholder: 'Søk'};
+    },
+
     getInitialState: function () {
         return {text: '', hits: [], hoverIndex: null, selectedIndex: null};
     },
+
     onKeyDown: function (e) {
         if (e.which === 13 || e.which === 9) { //enter or tab
             var selectedIndex = this.state.hoverIndex;
@@ -110,7 +115,7 @@ var SearchBox = React.createClass({
     },
 
     gotResults: function (err, hits) {
-        this.setState({hits: hits, hoverIndex: null});
+        this.setState({hits: hits, hoverIndex: null, selectedIndex: null});
     },
 
     onChange: function (e) {
@@ -135,11 +140,10 @@ var SearchBox = React.createClass({
                         type="text"
                         value={this.state.text}
                         className="form-control search"
-                        id="exampleInputEmail1"
                         autoComplete="off"
-                        placeholder="Søk her" />
+                        placeholder={this.props.placeholder} />
                     <span className="form-control-feedback">
-                        <NKIcon icon="sok" size="1" color="nk-black" />
+                       <SearchIcon />
                     </span>
                 </div>
                 <HitList
@@ -148,7 +152,6 @@ var SearchBox = React.createClass({
                     hoverIndex={this.state.hoverIndex}
                     hitSelected={this.hitSelected}/>
             </div>
-            
         );
     }
 });

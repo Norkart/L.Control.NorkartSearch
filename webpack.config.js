@@ -1,33 +1,29 @@
 'use strict';
 var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var webpack = require('webpack');
 
-'use strict';
 module.exports = {
-    entry: {
-        token: './js/token.jsx',
-        norkartid: './js/norkartid.jsx'
-    },
+    entry: './src/L.Control.NorkartSearch.jsx',
     output: {
-        path: path.join(__dirname, 'bundles'),
-        filename: '[name].bundle.js',
-        publicPath: '/Scripts/bundles/'
+        libraryTarget: 'var',
+        filename: 'build/L.Control.NorkartSearch.js'
     },
-   resolve: {
-        extensions: ['', '.html', '.js', '.json', '.scss', '.css'],
-        alias: {
-            leaflet_css: __dirname + '/node_modules/leaflet/dist/leaflet.css',
-            leaflet_marker: __dirname + '/node_modules/leaflet/dist/images/marker-icon.png',
-            leaflet_marker_2x: __dirname + '/node_modules/leaflet/dist/images/marker-icon-2x.png',
-            leaflet_marker_shadow: __dirname + '/node_modules/leaflet/dist/images/marker-shadow.png'
-        }
+    resolve: {
+        extensions: ['', '.js', '.jsx']
+    },
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'leaflet': 'L',
+        'reqwest': 'reqwest'
     },
     module: {
         loaders: [
-            {test: /\.css$/, loader: 'style-loader!css-loader'},
-            {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
-            {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},
-            {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
-            {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+            },
             {
                 test: /.jsx?$/,
                 loader: 'babel-loader',
@@ -35,8 +31,16 @@ module.exports = {
                 query: {
                     presets: ['react']
                 }
-            },
-            {test: /\.(png|jpg)$/, loader: 'file-loader?name=images/[name].[ext]'}
+            }
         ]
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin('build/L.Control.NorkartSearch.css'),
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            compress: {
+                warnings: false
+            }
+        })
+    ]
 };

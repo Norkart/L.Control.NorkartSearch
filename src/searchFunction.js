@@ -1,19 +1,20 @@
 'use strict';
-var _ = require('underscore');
 
 var reqwest = require('reqwest');
 
-function fixResults(res) {
-    return _.map(res.Options, function (option) {
-        return {text: option.Text, id: option.PayLoad.AdresseId, pos: option.PayLoad.Posisjon};
-    });
+function extend(to, from) {
+   for (var key in from) {
+        if (from.hasOwnProperty(key)) {
+            to[key] = from[key];
+        }
+   }
+   return to;
 }
 
 function search(text, extraHeaders, callback) {
-    //var url = 'http://www.webatlas.no:80/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query=' + text;
-    var url = '//tvm-webatlashar/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query=' + text;
+    var url = '//www.webatlas.no/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query=' + text;
 
-    var headers = _.extend(
+    var headers = extend(
         {'Accept': 'application/json; charset=utf-8'},
         extraHeaders
     );
@@ -28,7 +29,7 @@ function search(text, extraHeaders, callback) {
             callback(err);
         },
         success: function (resp) {
-            callback(null, fixResults(resp));
+            callback(null, resp.Options);
         }
     });
 }

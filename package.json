@@ -1,33 +1,32 @@
 {
-  "name": "searchplugin",
+  "name": "leaflet-norkartsearch",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "leaflet plugin for using the address search from Norkart. Requires an API-key.",
+  "main": "dist/L.Control.NorkartSearch.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel --presets react src/ --out-dir dist/ --copy-files && webpack",
+    "clean": "rimraf dist && rimraf build",
+    "prepublish": "npm run clean && npm run build"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Norkart AS",
+  "license": "BSD-2-Clause",
   "devDependencies": {
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",
     "babel-preset-react": "^6.5.0",
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
+    "rimraf": "^2.5.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "extract-text-webpack-plugin": "^1.0.1"
   },
   "dependencies": {
-    "@norkart/bootstrap-override": "^1.0.0",
-    "@norkart/ikoner": "^3.0.1",
-    "@norkart/norkartidjs": "^1.0.7",
     "bootstrap": "^3.3.6",
     "leaflet": "^0.7.7",
-    "leaflet-webatlastile": "^0.1.0",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
-    "reqwest": "^2.0.5",
-    "underscore": "^1.8.3"
+    "reqwest": "^2.0.5"
   }
 }
