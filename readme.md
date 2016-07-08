@@ -29,10 +29,10 @@ L.Control.NorkartSearch is a [Leaflet][1] plugin for using the address search fr
 
 Make sure to have the following components available on your page
 
-    - [Leaflet][1]
-    - [Bootstrap][3] (css only)
-    - [Reqwest][4]
-    - [React & ReactDOM][5]
+- [Leaflet][1]
+- [Bootstrap][3] (css only)
+- [Reqwest][4]
+- [React & ReactDOM][5]
 
 
 [1]: http://leafletjs.com
