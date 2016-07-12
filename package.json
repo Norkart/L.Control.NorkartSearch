@@ -1,6 +1,6 @@
 {
   "name": "@norkart/leaflet-norkartsearch",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "leaflet plugin for using the address search from Norkart. Requires an API-key.",
   "main": "dist/L.Control.NorkartSearch.js",
   "scripts": {
@@ -10,6 +10,14 @@
   },
   "author": "Norkart AS",
   "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Norkart/L.Control.NorkartSearch.git"
+  },
+  "homepage": "https://github.com/Norkart/L.Control.NorkartSearch",
+  "bugs": {
+    "url": "https://github.com/Norkart/L.Control.NorkartSearch/issues"
+  },
   "devDependencies": {
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",
