@@ -12,7 +12,8 @@ L.Control.NorkartSearch = L.Control.extend({
     options: {
         position: 'topright',
         placeholder: 'Søk',
-        showMarker: true
+        showMarker: true,
+        closeOnSelect: true
     },
 
     onAdd: function (map) {
@@ -25,6 +26,7 @@ L.Control.NorkartSearch = L.Control.extend({
                 NkAuth={options.NkAuth}
                 apiKey={options.apiKey}
                 placeholder={options.placeholder}
+                closeOnSelect={options.closeOnSelect}
                 hitSelected={this.hitSelected.bind(this)} />,
             container
         );

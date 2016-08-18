@@ -77,7 +77,7 @@ var HitList = React.createClass({
 var SearchBox = React.createClass({
 
     getDefaultProps: function () {
-        return {placeholder: 'Søk'};
+        return {placeholder: 'Søk', closeOnSelect: true};
     },
 
     getInitialState: function () {
@@ -101,6 +101,11 @@ var SearchBox = React.createClass({
         if (this.props.hitSelected) {
             this.props.hitSelected(hit);
         }
+        var state = {text: hit.Text};
+        if (this.props.closeOnSelect) {
+            state.hits = [];
+        }
+        this.setState(state);
     },
 
     changeHoverIndex: function (delta) {
