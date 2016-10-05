@@ -46,7 +46,15 @@ L.Control.NorkartSearch = L.Control.extend({
     },
 
     hitSelected: function (hit) {
-        var pos = L.latLng(hit.PayLoad.Posisjon.Y, hit.PayLoad.Posisjon.X);
+        //differentiate between Source and PayLoad coming from /search and /suggest 
+        if (hit.hasOwnProperty('PayLoad')) {
+            hit.Posisjon = hit.PayLoad.Posisjon;
+        }
+        if (hit.hasOwnProperty('Source')) {
+            hit.Posisjon = hit.Source.Posisjon;
+        }
+
+        var pos = L.latLng(hit.Posisjon.Y, hit.Posisjon.X);
         this.map.fire('search:select', {position: pos, element: hit});
         if (!this.options.showMarker) {
             return;

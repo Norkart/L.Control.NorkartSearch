@@ -11,13 +11,13 @@ function searchAppBackend(value, auth, gotResults) {
             'Authorization': 'Bearer ' + token,
             'X-WAAPI-Profile': auth.config.profile
         };
-        search(value, h, gotResults);
+        search(value, h, ['//www.webatlas.no/WAAPI-FritekstSok/search/matrikkel/adresse?Query=', '//www.webatlas.no/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query='], gotResults);
     });
 }
 
 function searchApiKey(value, token, gotResults) {
     var h = {'X-WAAPI-Token': token};
-    search(value, h, gotResults);
+    search(value, h, ['//www.webatlas.no/WAAPI-FritekstSok/search/matrikkel/adresse?Query=', '//www.webatlas.no/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query='], gotResults);
 }
 
 var HitElement = React.createClass({
