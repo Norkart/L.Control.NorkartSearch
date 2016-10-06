@@ -31,8 +31,6 @@ function search(text, extraHeaders, baseurls, callback) {
         }
 
         if (searchResults.length > 0) {
-            console.log("RESULT!", searchResults, baseurl, baseurls);
-            console.log(callback);
             callback(null, searchResults);
         } else {
             search(text, extraHeaders, baseurls, callback);
