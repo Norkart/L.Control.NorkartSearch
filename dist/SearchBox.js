@@ -16,11 +16,13 @@ function searchAppBackend(value, auth, gotResults) {
 }
 
 function searchApiKey(value, token, gotResults) {
-    var h = {'X-WAAPI-Token': token};
+    var h = { 'X-WAAPI-Token': token };
     search(value, h, ['//www.webatlas.no/WAAPI-FritekstSok/search/matrikkel/adresse?Query=', '//www.webatlas.no/WAAPI-FritekstSok/suggest/matrikkel/adresse?Query='], gotResults);
 }
 
 var HitElement = React.createClass({
+    displayName: 'HitElement',
+
 
     click: function (e) {
         e.preventDefault();
@@ -35,15 +37,17 @@ var HitElement = React.createClass({
         if (this.props.hit.selected) {
             className += ' active';
         }
-        return (
-            <a href="#"className={className} onClick={this.click}>
-                {this.props.hit.text}
-            </a>
+        return React.createElement(
+            'a',
+            { href: '#', className: className, onClick: this.click },
+            this.props.hit.text
         );
     }
 });
 
 var HitList = React.createClass({
+    displayName: 'HitList',
+
 
     render: function () {
         if (!this.props.hits.length) {
@@ -59,49 +63,52 @@ var HitList = React.createClass({
             };
         }.bind(this));
 
-        return (
-            <div className="list-group result-list">
-                {hits.map(function (hit) {
-                    return (
-                        <HitElement
-                            key={hit.id}
-                            hit={hit}
-                            hitSelected={this.props.hitSelected}/>
-                    );
-                }.bind(this))}
-            </div>
+        return React.createElement(
+            'div',
+            { className: 'list-group result-list' },
+            hits.map(function (hit) {
+                return React.createElement(HitElement, {
+                    key: hit.id,
+                    hit: hit,
+                    hitSelected: this.props.hitSelected });
+            }.bind(this))
         );
     }
 });
 
 var SearchBox = React.createClass({
+    displayName: 'SearchBox',
+
 
     getDefaultProps: function () {
-        return {placeholder: 'Søk', closeOnSelect: true};
+        return { placeholder: 'Søk', closeOnSelect: true };
     },
 
     getInitialState: function () {
-        return {text: '', hits: [], hoverIndex: null, selectedIndex: null};
+        return { text: '', hits: [], hoverIndex: null, selectedIndex: null };
     },
 
     onKeyDown: function (e) {
-        if (e.which === 13 || e.which === 9) { //enter or tab
+        if (e.which === 13 || e.which === 9) {
+            //enter or tab
             var selectedIndex = this.state.hoverIndex;
             this.hitSelected(selectedIndex);
-        } else if (e.which === 40) { //down
+        } else if (e.which === 40) {
+            //down
             this.changeHoverIndex(1);
-        } else if (e.which === 38) { //up
+        } else if (e.which === 38) {
+            //up
             this.changeHoverIndex(-1);
         }
     },
 
     hitSelected: function (selectedIndex) {
-        this.setState({selectedIndex: selectedIndex});
+        this.setState({ selectedIndex: selectedIndex });
         var hit = this.state.hits[selectedIndex];
         if (this.props.hitSelected) {
             this.props.hitSelected(hit);
         }
-        var state = {text: hit.Text};
+        var state = { text: hit.Text };
         if (this.props.closeOnSelect) {
             state.hits = [];
         }
@@ -116,16 +123,16 @@ var SearchBox = React.createClass({
         } else if (newIndex < 0) {
             newIndex = this.state.hits.length - 1;
         }
-        this.setState({hoverIndex: newIndex});
+        this.setState({ hoverIndex: newIndex });
     },
 
     gotResults: function (err, hits) {
-        this.setState({hits: hits, hoverIndex: null, selectedIndex: null});
+        this.setState({ hits: hits, hoverIndex: null, selectedIndex: null });
     },
 
     onChange: function (e) {
         var value = e.target.value;
-        this.setState({text: value});
+        this.setState({ text: value });
         if (this.props.apiKey) {
             searchApiKey(value, this.props.apiKey, this.gotResults);
         } else if (this.props.NkAuth) {
@@ -136,27 +143,31 @@ var SearchBox = React.createClass({
     },
 
     render: function () {
-        return (
-            <div className="nk-search">
-                <div className="form-group has-feedback">
-                    <input
-                        onInput={this.onChange}
-                        onKeyDown={this.onKeyDown}
-                        type="text"
-                        value={this.state.text}
-                        className="form-control search"
-                        autoComplete="off"
-                        placeholder={this.props.placeholder} />
-                    <span className="form-control-feedback">
-                       <SearchIcon />
-                    </span>
-                </div>
-                <HitList
-                    hits={this.state.hits}
-                    selectedIndex={this.state.selectedIndex}
-                    hoverIndex={this.state.hoverIndex}
-                    hitSelected={this.hitSelected}/>
-            </div>
+        return React.createElement(
+            'div',
+            { className: 'nk-search' },
+            React.createElement(
+                'div',
+                { className: 'form-group has-feedback' },
+                React.createElement('input', {
+                    onInput: this.onChange,
+                    onKeyDown: this.onKeyDown,
+                    type: 'text',
+                    value: this.state.text,
+                    className: 'form-control search',
+                    autoComplete: 'off',
+                    placeholder: this.props.placeholder }),
+                React.createElement(
+                    'span',
+                    { className: 'form-control-feedback' },
+                    React.createElement(SearchIcon, null)
+                )
+            ),
+            React.createElement(HitList, {
+                hits: this.state.hits,
+                selectedIndex: this.state.selectedIndex,
+                hoverIndex: this.state.hoverIndex,
+                hitSelected: this.hitSelected })
         );
     }
 });

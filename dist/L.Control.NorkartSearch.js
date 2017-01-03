@@ -1,4 +1,5 @@
 'use strict';
+
 var L = require('leaflet');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -21,26 +22,16 @@ L.Control.NorkartSearch = L.Control.extend({
             container = L.DomUtil.create('div', className),
             options = this.options;
         this.map = map;
-        ReactDOM.render(
-            <SearchBox
-                NkAuth={options.NkAuth}
-                apiKey={options.apiKey}
-                placeholder={options.placeholder}
-                closeOnSelect={options.closeOnSelect}
-                hitSelected={this.hitSelected.bind(this)} />,
-            container
-        );
+        ReactDOM.render(React.createElement(SearchBox, {
+            NkAuth: options.NkAuth,
+            apiKey: options.apiKey,
+            placeholder: options.placeholder,
+            closeOnSelect: options.closeOnSelect,
+            hitSelected: this.hitSelected.bind(this) }), container);
 
         var stop = L.DomEvent.stopPropagation;
         var fakeStop = L.DomEvent._fakeStop || stop;
-        L.DomEvent
-            .on(container, 'contextmenu', stop)
-            .on(container, 'click', fakeStop)
-            .on(container, 'mousedown', stop)
-            .on(container, 'touchstart', stop)
-            .on(container, 'dblclick', fakeStop)
-            .on(container, 'mousewheel', stop)
-            .on(container, 'MozMousePixelScroll', stop);
+        L.DomEvent.on(container, 'contextmenu', stop).on(container, 'click', fakeStop).on(container, 'mousedown', stop).on(container, 'touchstart', stop).on(container, 'dblclick', fakeStop).on(container, 'mousewheel', stop).on(container, 'MozMousePixelScroll', stop);
 
         return container;
     },
@@ -55,7 +46,7 @@ L.Control.NorkartSearch = L.Control.extend({
         }
 
         var pos = L.latLng(hit.Posisjon.Y, hit.Posisjon.X);
-        this.map.fire('search:select', {position: pos, element: hit});
+        this.map.fire('search:select', { position: pos, element: hit });
         if (!this.options.showMarker) {
             return;
         }
@@ -71,4 +62,3 @@ L.Control.NorkartSearch = L.Control.extend({
 L.control.norkartSearch = function (options) {
     return new L.Control.NorkartSearch(options);
 };
-

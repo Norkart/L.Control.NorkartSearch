@@ -3,12 +3,12 @@
 var reqwest = require('reqwest');
 
 function extend(to, from) {
-   for (var key in from) {
+    for (var key in from) {
         if (from.hasOwnProperty(key)) {
             to[key] = from[key];
         }
-   }
-   return to;
+    }
+    return to;
 }
 
 function search(text, extraHeaders, baseurls, callback) {
@@ -17,7 +17,7 @@ function search(text, extraHeaders, baseurls, callback) {
         return;
     }
     searchRequest(text, extraHeaders, baseurl, function (err, resp) {
-        if(err) {
+        if (err) {
             callback(err);
         }
 
