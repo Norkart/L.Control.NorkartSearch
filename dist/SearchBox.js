@@ -150,7 +150,7 @@ var SearchBox = React.createClass({
                 'div',
                 { className: 'form-group has-feedback' },
                 React.createElement('input', {
-                    onChange: this.onChange,
+                    onInput: this.onChange,
                     onKeyDown: this.onKeyDown,
                     type: 'text',
                     value: this.state.text,

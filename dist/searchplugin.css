@@ -20,6 +20,7 @@
 
 .nk-search .form-control-feedback {
     margin-top: 4px;
+    top: 0px;
 }
 
 .nk-search .result-list {
