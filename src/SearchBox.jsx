@@ -140,7 +140,7 @@ var SearchBox = React.createClass({
             <div className="nk-search">
                 <div className="form-group has-feedback">
                     <input
-                        onChange={this.onChange}
+                        onInput={this.onChange}
                         onKeyDown={this.onKeyDown}
                         type="text"
                         value={this.state.text}
