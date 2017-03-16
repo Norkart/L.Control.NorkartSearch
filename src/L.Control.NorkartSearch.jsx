@@ -1,5 +1,5 @@
 'use strict';
-var L = require('leaflet');
+var L = window.L;
 var React = require('react');
 var ReactDOM = require('react-dom');
 
