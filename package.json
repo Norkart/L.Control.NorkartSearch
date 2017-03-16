@@ -19,16 +19,17 @@
     "url": "https://github.com/Norkart/L.Control.NorkartSearch/issues"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.0",
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",
     "babel-preset-react": "^6.5.0",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "rimraf": "^2.5.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14",
-    "extract-text-webpack-plugin": "^1.0.1"
+    "webpack": "^1.12.14"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
