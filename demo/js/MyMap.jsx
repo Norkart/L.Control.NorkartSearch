@@ -15,6 +15,9 @@ var MyMap = React.createClass({
     componentDidMount: function () {
         var div = ReactDOM.findDOMNode(this);
         this.map = setupMap(div, this.props.apiKey);
+
+        console.log(this.props.NkAuth)
+
         L.control.search({NkAuth: this.props.NkAuth}).addTo(this.map);
     },
 

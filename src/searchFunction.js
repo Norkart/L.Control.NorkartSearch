@@ -18,6 +18,7 @@ function search(text, extraHeaders, callback) {
         {'Accept': 'application/json; charset=utf-8'},
         extraHeaders
     );
+
     reqwest({
         url: url,
         crossOrigin: true,

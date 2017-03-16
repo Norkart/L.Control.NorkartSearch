@@ -16,20 +16,21 @@ L.Control.NorkartSearch = L.Control.extend({
         closeOnSelect: true
     },
 
+    initialize: function (options) {
+        options = options || {};
+        L.setOptions(this, options);
+        if (options.hitSelected) {
+            this.hitSelected = options.hitSelected.bind(this);
+        } else {
+            this.hitSelected = this._defaulthitSelected.bind(this);
+        }
+    },
+
     onAdd: function (map) {
         var className = 'leaflet-control-search',
-            container = L.DomUtil.create('div', className),
-            options = this.options;
+            container = L.DomUtil.create('div', className);
         this.map = map;
-        ReactDOM.render(
-            <SearchBox
-                NkAuth={options.NkAuth}
-                apiKey={options.apiKey}
-                placeholder={options.placeholder}
-                closeOnSelect={options.closeOnSelect}
-                hitSelected={this.hitSelected.bind(this)} />,
-            container
-        );
+        this._renderSearch(container);
 
         var stop = L.DomEvent.stopPropagation;
         var fakeStop = L.DomEvent._fakeStop || stop;
@@ -41,17 +42,37 @@ L.Control.NorkartSearch = L.Control.extend({
             .on(container, 'dblclick', fakeStop)
             .on(container, 'mousewheel', stop)
             .on(container, 'MozMousePixelScroll', stop);
-
+        this.container = container;
         return container;
     },
 
-    hitSelected: function (hit) {
+    clearSearchBox: function () {
+        this._renderSearch(this.container);
+        if (this.marker) {
+            this.map.removeLayer(this.marker);
+        }
+    },
+
+    _renderSearch: function (container) {
+        var options = this.options;
+        ReactDOM.render(
+            <SearchBox
+                key={Date.now()}
+                NkAuth={options.NkAuth}
+                apiKey={options.apiKey}
+                placeholder={options.placeholder}
+                closeOnSelect={options.closeOnSelect}
+                hitSelected={this.hitSelected} />,
+            container
+        );
+    },
+
+    _defaulthitSelected: function (hit) {
         var pos = L.latLng(hit.PayLoad.Posisjon.Y, hit.PayLoad.Posisjon.X);
         this.map.fire('search:select', {position: pos, element: hit});
         if (!this.options.showMarker) {
             return;
         }
-
         if (this.marker) {
             this.map.removeLayer(this.marker);
         }
