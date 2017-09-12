@@ -50,7 +50,7 @@ See ```demo/index.html``` for an example.
 
 Install:
 
-    npm install leaflet-norkartsearch --save
+    npm install @norkart/leaflet-norkartsearch --save
 
 In code:
 
