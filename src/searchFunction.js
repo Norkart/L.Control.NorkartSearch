@@ -13,7 +13,7 @@ function extend(to, from) {
 
 
 function search(text, extraHeaders, callback) {
-    var url = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/adresse?Targets=gateadresse,matrikkelenhet&Query=' + text;
+    var url = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=gateadresse,matrikkelenhet&Query=' + text;
 
     var headers = extend(
         {'Accept': 'application/json; charset=utf-8'},
