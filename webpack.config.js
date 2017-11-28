@@ -34,6 +34,14 @@ module.exports = {
             }
         ]
     },
+    devServer: {
+        historyApiFallback: {
+            rewrites: [{from: /^\/$/, to: '/demo/index.html'}],
+            index: '/demo/index.html'
+        },
+        inline: true,
+        port: 8080
+    },
     plugins: [
         new ExtractTextPlugin('build/L.Control.NorkartSearch.css'),
         new webpack.optimize.UglifyJsPlugin({

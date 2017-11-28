@@ -11,9 +11,13 @@ function extend(to, from) {
    return to;
 }
 
-
 function search(text, extraHeaders, callback) {
-    var url = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=gateadresse,matrikkelenhet&Query=' + text;
+// function search(text, targets, extraHeaders, callback) {
+   //  var urlBase = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=';
+   //  targets.map((target) =>{
+   //    targetString += "target,";
+   //  });
+    var url ='//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=gateadresse,matrikkelenhet&Query=' + text;
 
     var headers = extend(
         {'Accept': 'application/json; charset=utf-8'},

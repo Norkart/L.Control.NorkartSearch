@@ -1,4 +1,4 @@
-#L.Control.NorkartSearch
+# L.Control.NorkartSearch
 
 L.Control.NorkartSearch is a [Leaflet][1] plugin for using the address search from Norkart. Requires an API-key.
 
@@ -46,7 +46,7 @@ And include the ```L.Control.NorkartSearch.js``` and ```L.Control.NorkartSearch.
 See ```demo/index.html``` for an example.
 
 
-### As an mpm-module
+### As an npm-module
 
 Install:
 
@@ -60,3 +60,13 @@ In code:
 ### Demo
 
 See <https://norkart.github.io/L.Control.NorkartSearch/demo/> for a simple example
+
+
+### Contribute
+
+##### Install dependencies:
+```npm install```
+
+##### Run code:
+Run the demo code by running:
+```webpack-dev-server``` and go to ```localhost:8080```
