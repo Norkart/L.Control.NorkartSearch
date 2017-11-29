@@ -4,7 +4,7 @@
     background: #fff;
     width: 500px;
     left: 50%;
-    
+
     margin-left: -250px;
 }
 
@@ -22,8 +22,30 @@
     margin-top: 4px;
 }
 
+.nk-search .form-control{
+    width: 250px;
+}
+.nk-search .error{
+    border: 1px solid #ccc;
+    animation: error-blink 2s;
+}
+@keyframes error-blink {
+  /* You could think of as "step 1" */
+  0% {
+    border: 1px solid red;
+  }
+  /* You could think of as "step 2" */
+  100% {
+    border: 1px solid #ccc;
+   }
+}
+
 .nk-search .result-list {
     margin-top: 5px;
+}
+
+.nk-search .list-group .hidden{
+  display: none;
 }
 
 .nk-search a.list-group-item.hover {

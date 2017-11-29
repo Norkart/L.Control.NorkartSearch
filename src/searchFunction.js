@@ -11,18 +11,15 @@ function extend(to, from) {
    return to;
 }
 
-function search(text, extraHeaders, callback) {
-// function search(text, targets, extraHeaders, callback) {
-   //  var urlBase = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=';
-   //  targets.map((target) =>{
-   //    targetString += "target,";
-   //  });
-    var url ='//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=gateadresse,matrikkelenhet&Query=' + text;
+function search(text, targets, extraHeaders, callback) {
+      var baseUrl = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=';
+      var targetString=targets.join(',');
+      var url = baseUrl + targetString +'&Query=' + text;
 
-    var headers = extend(
-        {'Accept': 'application/json; charset=utf-8'},
-        extraHeaders
-    );
+      var headers = extend(
+         {'Accept': 'application/json; charset=utf-8'},
+         extraHeaders
+      );
 
     reqwest({
         url: url,
@@ -32,6 +29,7 @@ function search(text, extraHeaders, callback) {
         contentType: 'application/json',
         headers: headers,
         error: function (err) {
+            console.log('Error in search');
             callback(err);
         },
         success: function (resp) {
