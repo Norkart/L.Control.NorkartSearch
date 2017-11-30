@@ -74,4 +74,4 @@ See <https://norkart.github.io/L.Control.NorkartSearch/demo/> for a simple examp
 
 ##### Run code:
 Run the demo code by running:
-```webpack-dev-server``` and go to ```localhost:8080```
+```npm start``` and go to ```localhost:8080```

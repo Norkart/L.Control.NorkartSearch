@@ -30,11 +30,13 @@
     animation: error-blink 2s;
 }
 @keyframes error-blink {
-  /* You could think of as "step 1" */
+  /*Red blink around input field */
+  
+  /* step 1 in the animation: turn border red */
   0% {
     border: 1px solid red;
   }
-  /* You could think of as "step 2" */
+  /* step 2 in the animation: turn border back to original */
   100% {
     border: 1px solid #ccc;
    }

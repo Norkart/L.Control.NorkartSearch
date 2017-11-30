@@ -13,8 +13,8 @@ function extend(to, from) {
 
 function search(text, targets, extraHeaders, callback) {
       var baseUrl = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=';
-      var targetString=targets.join(',');
-      var url = baseUrl + targetString +'&Query=' + text;
+      var targetString = targets.join(',');
+      var url = baseUrl + targetString + '&Query=' + text;
 
       var headers = extend(
          {'Accept': 'application/json; charset=utf-8'},
@@ -29,7 +29,7 @@ function search(text, targets, extraHeaders, callback) {
         contentType: 'application/json',
         headers: headers,
         error: function (err) {
-            console.log('Error in search');
+            console.error('Error in search');
             callback(err);
         },
         success: function (resp) {

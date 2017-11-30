@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-
+var createReactClass = require('create-react-class');
 var search = require('./searchFunction');
 var SearchIcon = require('./SearchIcon');
 
@@ -20,7 +20,7 @@ function searchApiKey(value, targets, token, gotResults) {
     search(value, targets, h, gotResults);
 }
 
-var HitElement = React.createClass({
+var HitElement = createReactClass({
 
     click: function (e) {
         e.preventDefault();
@@ -61,14 +61,13 @@ var HitList = React.createClass({
 
         return (
             <div className={(this.props.displayHits)
-                ? 'list-group result-list': 'list-group result-list hidden'}>
+                ? 'list-group result-list' : 'list-group result-list hidden'}>
                 {hits.map(function (hit) {
                     return (
                         <HitElement
                             key={hit.id}
                             hit={hit}
-                            hitSelected={this.props.hitSelected}
-                        />
+                            hitSelected={this.props.hitSelected}/>
                     );
                 }.bind(this))}
             </div>
@@ -101,20 +100,20 @@ var SearchBox = React.createClass({
             hoverIndex: null,
             selectedIndex: null,
             resultStatus: 'ok',
-            displayHits: 'none'
+            displayHits: false
         };
     },
 
     onKeyDown: function (e) {
         //enter or tab, and selected from menu
         if (e.which === 13 || e.which === 9) {
-            if(this.state.hoverIndex === null) {
-                if(this.state.hits.length === 1){
+            if (this.state.hoverIndex === null) {
+                if (this.state.hits.length === 1) {
                     this.hitSelected(0); //choose first element if only one result present
-                }else{
+                } else {
                     this.setState({resultStatus: 'error'});
                 }
-            }else{
+            } else {
                 this.setState({resultStatus: 'ok'});
                 var selectedIndex = this.state.hoverIndex;
                 this.hitSelected(selectedIndex);
@@ -140,6 +139,8 @@ var SearchBox = React.createClass({
     },
 
     handleClickOutside: function (event) {
+        console.log('Clicked outside');
+        console.log(event);
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.closeHits();
         }
@@ -168,21 +169,25 @@ var SearchBox = React.createClass({
     },
 
     gotResults: function (err, hits) {
-        if(err){
+        if (err) {
             console.log('empty search field');
-        } else if(hits.length < 1){
+        } else if (hits.length < 1) {
             this.setState({displayHits: false});
-        }
-        else{
-            this.setState({hits: hits, displayHits: true,
-                hoverIndex: null, selectedIndex: null, resultStatus: 'ok'});
+        } else {
+            this.setState({
+                hits: hits,
+                displayHits: true,
+                hoverIndex: null,
+                selectedIndex: null,
+                resultStatus: 'ok'
+            });
         }
     },
 
     onChange: function (e) {
         var value = e.target.value;
         this.setState({text: value});
-        if(value.length>0){
+        if (value.length > 0) {
             this.setState({resultStatus: 'ok'});
             if (this.props.apiKey) {
                 searchApiKey(value, this.props.targets, this.props.apiKey, this.gotResults);
@@ -191,8 +196,9 @@ var SearchBox = React.createClass({
             } else {
                 throw new Error('Ikke tilgang!');
             }
-        }else{
+        } else {
             this.closeHits();
+            this.setState({hits: []});
         }
     },
 
@@ -205,11 +211,10 @@ var SearchBox = React.createClass({
                         onKeyDown={this.onKeyDown}
                         type='text'
                         value={this.state.text}
-                        className={'form-control search '+this.state.resultStatus}
+                        className={'form-control search ' + this.state.resultStatus}
                         autoComplete='off'
                         onFocus = {this.openHits}
-                        placeholder={this.props.placeholder}
-                    />
+                        placeholder={this.props.placeholder}/>
                     <span className='form-control-feedback'>
                        <SearchIcon />
                     </span>
@@ -219,8 +224,7 @@ var SearchBox = React.createClass({
                     selectedIndex={this.state.selectedIndex}
                     hoverIndex={this.state.hoverIndex}
                     hitSelected={this.hitSelected}
-                    displayHits = {this.state.displayHits}
-                />
+                    displayHits = {this.state.displayHits}/>
             </div>
         );
     }

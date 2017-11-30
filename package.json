@@ -4,6 +4,7 @@
   "description": "leaflet plugin for using the address search from Norkart. Requires an API-key.",
   "main": "dist/L.Control.NorkartSearch.js",
   "scripts": {
+    "start": "webpack-dev-server",
     "build": "babel --presets react src/ --out-dir dist/ --copy-files && webpack",
     "clean": "rimraf dist && rimraf build",
     "prepublish": "npm run clean && npm run build"
