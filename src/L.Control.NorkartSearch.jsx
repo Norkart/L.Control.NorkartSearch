@@ -13,7 +13,8 @@ L.Control.NorkartSearch = L.Control.extend({
         position: 'topright',
         placeholder: 'Søk',
         showMarker: true,
-        closeOnSelect: true
+        closeOnSelect: true,
+        targets: ['matrikkelenhet', 'gateadresse']
     },
 
     initialize: function (options) {
@@ -60,6 +61,7 @@ L.Control.NorkartSearch = L.Control.extend({
                 key={Date.now()}
                 NkAuth={options.NkAuth}
                 apiKey={options.apiKey}
+                targets={options.targets}
                 placeholder={options.placeholder}
                 closeOnSelect={options.closeOnSelect}
                 hitSelected={this.hitSelected} />,
@@ -84,4 +86,3 @@ L.Control.NorkartSearch = L.Control.extend({
 L.control.norkartSearch = function (options) {
     return new L.Control.NorkartSearch(options);
 };
-

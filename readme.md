@@ -1,4 +1,4 @@
-#L.Control.NorkartSearch
+# L.Control.NorkartSearch
 
 L.Control.NorkartSearch is a [Leaflet][1] plugin for using the address search from Norkart. Requires an API-key.
 
@@ -10,10 +10,15 @@ L.Control.NorkartSearch is a [Leaflet][1] plugin for using the address search fr
 
 ## Options
 
-    apiKey: an api key from norkart,
-    position: a [leaflet control position][2]. Default: 'topright'
-    placeholder: placeholder text for search textbox
-    showMarker: show a marker in the map when a hit is selected
+| option      | Type   | Default | Description             |
+|-------------|--------|---------|------------------------ |
+| apiKey      | string |   none  | an api key from Norkart |
+| position    | [leaflet control position][2] | 'topright' | position of the leaflet control       |
+| placeholder | string | Søk   | placeholder text for search box
+| showMarker  | boolean| true   | Wether or not to show a marker in the map when a hit is selected
+| targets     | array<String> | ['matrikkelenhet', 'gateadresse'] | target names that determines what type of search the engine supports. Supported targets are: 'matrikkelenhet', 'gateadresse', 'stedsnavn' (and more, see [fritektsook api](http://www.webatlas.no/WAAPI-FritekstSok/swagger-ui/#!/suggest/CustomKommuneSuggestionRequest)).
+<!-- |onFocus| boolean | false | Wether or not the searchbox should be automatically selected (focused) when the page is loaded -->
+
 
 ## Events
 
@@ -46,7 +51,7 @@ And include the ```L.Control.NorkartSearch.js``` and ```L.Control.NorkartSearch.
 See ```demo/index.html``` for an example.
 
 
-### As an mpm-module
+### As an npm-module
 
 Install:
 
@@ -60,3 +65,13 @@ In code:
 ### Demo
 
 See <https://norkart.github.io/L.Control.NorkartSearch/demo/> for a simple example
+
+
+### Contribute
+
+##### Install dependencies:
+```npm install```
+
+##### Run code:
+Run the demo code by running:
+```npm start``` and go to ```localhost:8080```
