@@ -139,8 +139,6 @@ var SearchBox = React.createClass({
     },
 
     handleClickOutside: function (event) {
-        console.log('Clicked outside');
-        console.log(event);
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.closeHits();
         }
@@ -171,7 +169,7 @@ var SearchBox = React.createClass({
     gotResults: function (err, hits) {
         if (err) {
             console.log('empty search field');
-        } else if (hits.length < 1) {
+        } else if (hits.length === 0) {
             this.setState({displayHits: false});
         } else {
             this.setState({
