@@ -1,6 +1,6 @@
 {
   "name": "@norkart/leaflet-norkartsearch",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "leaflet plugin for using the address search from Norkart. Requires an API-key.",
   "main": "dist/L.Control.NorkartSearch.js",
   "scripts": {
