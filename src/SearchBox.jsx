@@ -5,19 +5,19 @@ var createReactClass = require('create-react-class');
 var search = require('./searchFunction');
 var SearchIcon = require('./SearchIcon');
 
-function searchAppBackend(value, targets, auth, gotResults) {
+function searchAppBackend(value, targets, limits, auth, gotResults) {
     auth.getToken(function (err, token) {
         var h = {
             'Authorization': 'Bearer ' + token,
             'X-WAAPI-Profile': auth.config.profile
         };
-        search(value, targets, h, gotResults);
+        search(value, targets, limits, h, gotResults);
     });
 }
 
-function searchApiKey(value, targets, token, gotResults) {
+function searchApiKey(value, targets, limits, token, gotResults) {
     var h = {'X-WAAPI-Token': token};
-    search(value, targets, h, gotResults);
+    search(value, targets, limits, h, gotResults);
 }
 
 var HitElement = createReactClass({
@@ -89,7 +89,8 @@ var SearchBox = React.createClass({
         return {
             placeholder: 'Søk',
             closeOnSelect: true,
-            targets: ['matrikkelenhet', 'gateadresse']
+            targets: ['matrikkelenhet', 'gateadresse'],
+            limits: undefined
         };
     },
 
@@ -188,9 +189,9 @@ var SearchBox = React.createClass({
         if (value.length > 0) {
             this.setState({resultStatus: 'ok'});
             if (this.props.apiKey) {
-                searchApiKey(value, this.props.targets, this.props.apiKey, this.gotResults);
+                searchApiKey(value, this.props.targets, this.props.limits, this.props.apiKey, this.gotResults);
             } else if (this.props.NkAuth) {
-                searchAppBackend(value, this.props.targets, this.props.NkAuth, this.gotResults);
+                searchAppBackend(value, this.props.targets, this.props.limits, this.props.NkAuth, this.gotResults);
             } else {
                 throw new Error('Ikke tilgang!');
             }

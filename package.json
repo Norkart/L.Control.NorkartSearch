@@ -30,7 +30,8 @@
     "rimraf": "^2.5.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14"
+    "webpack": "^1.15.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",

@@ -16,6 +16,7 @@ L.Control.NorkartSearch is a [Leaflet][1] plugin for using the address search fr
 | position    | [leaflet control position][2] | 'topright' | position of the leaflet control       |
 | placeholder | string | Søk   | placeholder text for search box
 | showMarker  | boolean| true   | Wether or not to show a marker in the map when a hit is selected
+| limits  | array<String>| undefined  | array of municipality id's (kommunenummer) to limit search to |
 | targets     | array<String> | ['matrikkelenhet', 'gateadresse'] | target names that determines what type of search the engine supports. Supported targets are: 'matrikkelenhet', 'gateadresse', 'stedsnavn' (and more, see [fritektsook api](http://www.webatlas.no/WAAPI-FritekstSok/swagger-ui/#!/suggest/CustomKommuneSuggestionRequest)).
 <!-- |onFocus| boolean | false | Wether or not the searchbox should be automatically selected (focused) when the page is loaded -->
 

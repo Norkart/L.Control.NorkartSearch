@@ -11,10 +11,11 @@ function extend(to, from) {
    return to;
 }
 
-function search(text, targets, extraHeaders, callback) {
+function search(text, targets, limits, extraHeaders, callback) {
       var baseUrl = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=';
       var targetString = targets.join(',');
-      var url = baseUrl + targetString + '&Query=' + text;
+      var limits = (limits) ? '&kommuneLimit=' + limits.join(',') : '';
+      var url = baseUrl + targetString + limits + '&Query=' + text;
 
       var headers = extend(
          {'Accept': 'application/json; charset=utf-8'},
