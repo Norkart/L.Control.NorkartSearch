@@ -24,7 +24,12 @@ var HitElement = createReactClass({
 
     click: function (e) {
         e.preventDefault();
+        e.stopPropagation();
         this.props.hitSelected(this.props.hit.index);
+    },
+
+    mouseenter: function () {
+        this.props.onEnter(this.props.hit.index);
     },
 
     render: function () {
@@ -36,7 +41,10 @@ var HitElement = createReactClass({
             className += ' active';
         }
         return (
-            <button href='#'className={className} onClick={this.click}>
+            <button
+                onMouseEnter={this.mouseenter}
+                className={className}
+                onClick={this.click}>
                 {this.props.hit.text}
             </button>
         );
@@ -67,11 +75,12 @@ var HitList = createReactClass({
         return (
             <div className={(this.props.displayHits)
                 ? 'list-group result-list' : 'list-group result-list hidden'}>
-                {hits.map(function (hit) {
+                {hits.map(function (hit, idx) {
                     return (
                         <HitElement
                             key={hit.id}
                             hit={hit}
+                            onEnter={this.props.setHoverIndex}
                             hitSelected={this.props.hitSelected}/>
                     );
                 }.bind(this))}
@@ -134,6 +143,7 @@ var SearchBox = createReactClass({
     },
 
     hitSelected: function (selectedIndex) {
+
         this.setState({selectedIndex: selectedIndex});
         var hit = this.state.hits[selectedIndex];
         if (this.props.hitSelected) {
@@ -141,9 +151,11 @@ var SearchBox = createReactClass({
         }
         var state = {text: hit.Text};
         if (this.props.closeOnSelect) {
-            state.hits = [];
+            //state.hits = [];
+            state.displayHits = false;
         }
         this.setState(state);
+        console.log("hit selected")
     },
 
     handleClickOutside: function (event) {
@@ -163,6 +175,10 @@ var SearchBox = createReactClass({
         this.setState({displayHits: true});
     },
 
+    setHoverIndex: function (index) {
+        this.setState({hoverIndex: index});
+    },
+
     changeHoverIndex: function (delta) {
         var currentIndex = this.state.hoverIndex !== null ? this.state.hoverIndex : -1;
         var newIndex = currentIndex + delta;
@@ -171,7 +187,7 @@ var SearchBox = createReactClass({
         } else if (newIndex < 0) {
             newIndex = this.state.hits.length - 1;
         }
-        this.setState({hoverIndex: newIndex});
+        this.setHoverIndex(newIndex);
     },
 
     clearResults: function () {
@@ -203,6 +219,12 @@ var SearchBox = createReactClass({
         }
     },
 
+    onClick: function () {
+        if (this.state.hits.length && this.state.text && !this.displayHits) {
+            this.setState({displayHits: true});
+        }
+    },
+
     onChange: function (e) {
         var value = e.target.value;
         this.setState({text: value});
@@ -223,7 +245,7 @@ var SearchBox = createReactClass({
 
     render: function () {
         return (
-            <div className='nk-search' ref={this.setWrapperRef}>
+            <div className='nk-search' ref={this.setWrapperRef} onClick={this.onClick}>
                 <div className='form-group has-feedback'>
                     <input
                         onChange={this.onChange}
@@ -242,6 +264,7 @@ var SearchBox = createReactClass({
                     </span>
                 </div>
                 <HitList
+                    setHoverIndex={this.setHoverIndex}
                     noHitsMessage={this.props.noHitsMessage}
                     showNoResults={this.state.showNoResults}
                     hits={this.state.hits}

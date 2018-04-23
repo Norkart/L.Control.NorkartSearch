@@ -58,8 +58,9 @@
   display: none;
 }
 
-.nk-search a.list-group-item.hover {
-    background-color: #f5f5f5;
+.nk-search .list-group-item.hover {
+    /*background-color: #f5f5f5;*/
+    background-color: red;
     color: #555;
     text-decoration: none;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 //import './style.css';
-import  SearchBox from './SearchBox';
+import SearchBox from './SearchBox';
 
 var L = window.L;
 

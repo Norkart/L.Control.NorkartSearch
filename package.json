@@ -1,6 +1,6 @@
 {
-  "name": "search",
-  "version": "0.0.1",
+  "name": "@norkart/leaflet-norkartsearch",
+  "version": "2.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -21,7 +21,8 @@
     "webpack-dev-server": "webpack-dev-server --open --config ./tools/webpack.dev.js",
     "build-demo": "rimraf demo && webpack --config ./tools/webpack.prod.js && copyfiles -u 1 tools/index.html demo"
   },
-  "license": "ISC",
+  "author": "Norkart AS",
+  "license": "BSD-2-Clause",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
