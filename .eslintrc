@@ -1,14 +1,5 @@
 {
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
-    },
+    "extends": "react-app",
     "rules": {
         "eqeqeq": "error",
         "quotes": ["error", "single"],

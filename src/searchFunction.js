@@ -1,6 +1,4 @@
-'use strict';
-
-var reqwest = require('reqwest');
+import reqwest from 'reqwest';
 
 function extend(to, from) {
    for (var key in from) {
@@ -14,14 +12,13 @@ function extend(to, from) {
 function search(text, targets, limits, extraHeaders, callback) {
       var baseUrl = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=';
       var targetString = targets.join(',');
-      var limits = (limits) ? '&kommuneLimit=' + limits.join(',') : '';
-      var url = baseUrl + targetString + limits + '&Query=' + text;
+      var limitsString = (limits) ? '&kommuneLimit=' + limits.join(',') : '';
+      var url = baseUrl + targetString + limitsString + '&Query=' + text;
 
       var headers = extend(
          {'Accept': 'application/json; charset=utf-8'},
          extraHeaders
       );
-
     reqwest({
         url: url,
         crossOrigin: true,
@@ -39,4 +36,4 @@ function search(text, targets, limits, extraHeaders, callback) {
     });
 }
 
-module.exports = search;
+export default search;
