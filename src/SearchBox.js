@@ -36,9 +36,9 @@ var HitElement = createReactClass({
             className += ' active';
         }
         return (
-            <a href='#'className={className} onClick={this.click}>
+            <button href='#'className={className} onClick={this.click}>
                 {this.props.hit.text}
-            </a>
+            </button>
         );
     }
 });
