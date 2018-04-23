@@ -59,7 +59,7 @@ var HitList = createReactClass({
                 <div className="result-error">{this.props.noHitsMessage}</div>
             );
         }
-        if (!this.props.hits.length) {
+        if (!this.props.hits.length || !this.props.displayHits) {
             return null;
         }
         var hits = this.props.hits.map(function (hit, idx) {
@@ -74,7 +74,7 @@ var HitList = createReactClass({
 
         return (
             <div className={(this.props.displayHits)
-                ? 'list-group result-list' : 'list-group result-list hidden'}>
+                ? 'list-group result-list' : 'list-group result-list'}>
                 {hits.map(function (hit, idx) {
                     return (
                         <HitElement
