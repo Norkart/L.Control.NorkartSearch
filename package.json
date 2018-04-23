@@ -2,6 +2,16 @@
   "name": "@norkart/leaflet-norkartsearch",
   "version": "2.0.0",
   "description": "",
+  "author": "Norkart AS",
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Norkart/L.Control.NorkartSearch.git"
+  },
+  "homepage": "https://github.com/Norkart/L.Control.NorkartSearch",
+  "bugs": {
+    "url": "https://github.com/Norkart/L.Control.NorkartSearch/issues"
+  },
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -21,8 +31,6 @@
     "webpack-dev-server": "webpack-dev-server --open --config ./tools/webpack.dev.js",
     "build-demo": "rimraf demo && webpack --config ./tools/webpack.prod.js && copyfiles -u 1 tools/index.html demo"
   },
-  "author": "Norkart AS",
-  "license": "BSD-2-Clause",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

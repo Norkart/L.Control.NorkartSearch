@@ -155,7 +155,6 @@ var SearchBox = createReactClass({
             state.displayHits = false;
         }
         this.setState(state);
-        console.log("hit selected")
     },
 
     handleClickOutside: function (event) {
