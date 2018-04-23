@@ -2,6 +2,7 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import search from './searchFunction';
 import SearchIcon from './SearchIcon';
+import CloseBtn from './CloseBtn';
 
 
 function searchAppBackend(value, targets, limits, auth, gotResults) {
@@ -45,6 +46,11 @@ var HitElement = createReactClass({
 var HitList = createReactClass({
 
     render: function () {
+        if (this.props.showNoResults) {
+            return (
+                <div className="result-error">{this.props.noHitsMessage}</div>
+            );
+        }
         if (!this.props.hits.length) {
             return null;
         }
@@ -87,6 +93,7 @@ var SearchBox = createReactClass({
     getDefaultProps: function () {
         return {
             placeholder: 'Søk',
+            noHitsMessage: 'Ingen treff',
             closeOnSelect: true,
             targets: ['matrikkelenhet', 'gateadresse'],
             limits: undefined
@@ -100,6 +107,7 @@ var SearchBox = createReactClass({
             hoverIndex: null,
             selectedIndex: null,
             resultStatus: 'ok',
+            showNoResults: false,
             displayHits: false
         };
     },
@@ -166,17 +174,30 @@ var SearchBox = createReactClass({
         this.setState({hoverIndex: newIndex});
     },
 
+    clearResults: function () {
+        this.setState({
+            showNoResults: false,
+            displayHits: false,
+            hits: [],
+            text: ''
+        });
+    },
+
     gotResults: function (err, hits) {
         if (err) {
             console.log('empty search field');
         } else if (hits.length === 0) {
-            this.setState({displayHits: false});
+            this.setState({
+                displayHits: false,
+                showNoResults: true
+            });
         } else {
             this.setState({
                 hits: hits,
                 displayHits: true,
                 hoverIndex: null,
                 selectedIndex: null,
+                showNoResults: false,
                 resultStatus: 'ok'
             });
         }
@@ -214,10 +235,15 @@ var SearchBox = createReactClass({
                         onFocus = {this.openHits}
                         placeholder={this.props.placeholder}/>
                     <span className='form-control-feedback'>
-                       <SearchIcon />
+                        {this.state.hits.length
+                            ? <CloseBtn onClick={this.clearResults}/>
+                            : null}
+                        <SearchIcon />
                     </span>
                 </div>
                 <HitList
+                    noHitsMessage={this.props.noHitsMessage}
+                    showNoResults={this.state.showNoResults}
                     hits={this.state.hits}
                     selectedIndex={this.state.selectedIndex}
                     hoverIndex={this.state.hoverIndex}

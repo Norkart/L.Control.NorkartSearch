@@ -19,6 +19,9 @@
 
 .nk-search .form-control-feedback {
     margin-top: 4px;
+    width: auto;
+    margin-right: 4px;
+    pointer-events: auto;
 }
 
 .nk-search .form-control{
@@ -39,6 +42,12 @@
   100% {
     border: 1px solid #ccc;
    }
+}
+
+.nk-search .result-error {
+  margin-top: 5px;
+  background-color: #f5f5f5;
+  padding: 4px;
 }
 
 .nk-search .result-list {
