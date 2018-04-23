@@ -1,43 +1,70 @@
 {
   "name": "@norkart/leaflet-norkartsearch",
-  "version": "1.2.1",
-  "description": "leaflet plugin for using the address search from Norkart. Requires an API-key.",
-  "main": "dist/L.Control.NorkartSearch.js",
+  "version": "2.0.0",
+  "description": "",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "babel --presets react src/ --out-dir dist/ --copy-files && webpack",
-    "clean": "rimraf dist && rimraf build",
-    "prepublish": "npm run clean && npm run build"
+    "clean": "rimraf dist",
+    "lint": "eslint src/.",
+    "test": "jest",
+    "start": "concurrently --kill-others \"npm run watch-public\" \"npm run watch-css\" \"npm run webpack-dev-server\"",
+    "prepublishOnly": "npm run clean && npm run build",
+    "build": "npm run lint && npm run test && npm run build-css && npm run build-babel",
+    "build-babel": "babel src/ --out-dir dist/ --ignore '**/*.test.js'",
+    "build-copycss": "copyfiles -u 1 'src/**/*.css' dist",
+    "build-copypublic": "copyfiles -u 1 'public/**/*.*' dist",
+    "build-scss-compile": "node-sass-chokidar src/ -o dist/",
+    "build-css-autoprefixer": "postcss dist/**/*.css --use autoprefixer -d dist",
+    "build-css": "npm run build-scss-compile && npm run build-copycss",
+    "watch-css": "chokidar 'src/**/*.scss' 'src/**/*.css' --initial -c 'npm run build-css'",
+    "watch-public": "chokidar 'public/**/*.*' --initial -c 'npm run build-copypublic'",
+    "webpack-dev-server": "webpack-dev-server --open --config ./tools/webpack.dev.js",
+    "build-demo": "rimraf demo && webpack --config ./tools/webpack.prod.js && copyfiles -u 1 tools/index.html demo"
   },
   "author": "Norkart AS",
   "license": "BSD-2-Clause",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Norkart/L.Control.NorkartSearch.git"
-  },
-  "homepage": "https://github.com/Norkart/L.Control.NorkartSearch",
-  "bugs": {
-    "url": "https://github.com/Norkart/L.Control.NorkartSearch/issues"
-  },
   "devDependencies": {
-    "babel-cli": "^6.24.0",
-    "babel-core": "^6.7.4",
-    "babel-loader": "^6.2.4",
-    "babel-preset-react": "^6.5.0",
-    "css-loader": "^0.23.1",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "file-loader": "^0.8.5",
-    "rimraf": "^2.5.3",
-    "style-loader": "^0.13.1",
-    "url-loader": "^0.5.7",
-    "webpack": "^1.15.0",
-    "webpack-dev-server": "^2.11.1"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "chokidar-cli": "^1.2.0",
+    "concurrently": "^3.5.1",
+    "copyfiles": "^1.2.0",
+    "css-loader": "^0.28.8",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.1.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.34.1",
+    "eslint-plugin-import": "^2.6.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "file-loader": "^1.1.6",
+    "jest": "^22.1.1",
+    "node-sass-chokidar": "^0.0.3",
+    "postcss-cli": "^4.1.1",
+    "react-dom": "^16.2.0",
+    "rimraf": "^2.6.2",
+    "style-loader": "^0.19.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.4",
+    "webpack-dev-server": "^2.11.0",
+    "webpack-hot-middleware": "^2.21.0",
+    "webpack-merge": "^4.1.1",
+    "react": "^16.2.0"
   },
   "dependencies": {
-    "bootstrap": "^3.3.6",
-    "leaflet": "^0.7.7",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0",
+    "create-react-class": "^15.6.3",
     "reqwest": "^2.0.5"
+  },
+  "peerDependencies": {
+    "react": "16.x"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "./tools/setupTests.js"
   }
 }
