@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {Component} from 'react';
 import createReactClass from 'create-react-class';
 import search from './searchFunction';
 import SearchIcon from './SearchIcon';
 import CloseBtn from './CloseBtn';
-
+import HitList from './HitList';
 
 function searchAppBackend(value, targets, limits, auth, gotResults) {
     auth.getToken(function (err, token) {
@@ -20,96 +20,11 @@ function searchApiKey(value, targets, limits, token, gotResults) {
     search(value, targets, limits, h, gotResults);
 }
 
-var HitElement = createReactClass({
+class SearchBox extends Component {
 
-    click: function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.props.hitSelected(this.props.hit.index);
-    },
-
-    mouseenter: function () {
-        this.props.onEnter(this.props.hit.index);
-    },
-
-    render: function () {
-        var className = 'list-group-item';
-        if (this.props.hit.hover && !this.props.hit.selected) {
-            className += ' hover';
-        }
-        if (this.props.hit.selected) {
-            className += ' active';
-        }
-        return (
-            <button
-                onMouseEnter={this.mouseenter}
-                className={className}
-                onClick={this.click}>
-                {this.props.hit.text}
-            </button>
-        );
-    }
-});
-
-var HitList = createReactClass({
-
-    render: function () {
-        if (this.props.showNoResults) {
-            return (
-                <div className="result-error">{this.props.noHitsMessage}</div>
-            );
-        }
-        if (!this.props.hits.length || !this.props.displayHits) {
-            return null;
-        }
-        var hits = this.props.hits.map(function (hit, idx) {
-            return {
-                id: hit.Id,
-                text: hit.Text,
-                index: idx,
-                hover: idx === this.props.hoverIndex,
-                selected: idx === this.props.selectedIndex
-            };
-        }.bind(this));
-
-        return (
-            <div className="list-group result-list">
-                {hits.map(function (hit, idx) {
-                    return (
-                        <HitElement
-                            key={hit.id}
-                            hit={hit}
-                            onEnter={this.props.setHoverIndex}
-                            hitSelected={this.props.hitSelected}/>
-                    );
-                }.bind(this))}
-            </div>
-        );
-    }
-});
-
-var SearchBox = createReactClass({
-
-    componentDidMount: function () {
-        document.addEventListener('mousedown', this.handleClickOutside);
-    },
-
-    componentWillUnmount: function () {
-        document.removeEventListener('mousedown', this.handleClickOutside);
-    },
-
-    getDefaultProps: function () {
-        return {
-            placeholder: 'Søk',
-            noHitsMessage: 'Ingen treff',
-            closeOnSelect: true,
-            targets: ['matrikkelenhet', 'gateadresse'],
-            limits: undefined
-        };
-    },
-
-    getInitialState: function () {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             text: '',
             hits: [],
             hoverIndex: null,
@@ -118,9 +33,26 @@ var SearchBox = createReactClass({
             showNoResults: false,
             displayHits: false
         };
-    },
 
-    onKeyDown: function (e) {
+        this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onClick = this.onClick.bind(this);
+        this.gotResults = this.gotResults.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
+        this.hitSelected = this.hitSelected.bind(this);
+        this.clearResults = this.clearResults.bind(this);
+    }
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    onKeyDown(e) {
         //enter or tab, and selected from menu
         if (e.which === 13 || e.which === 9) {
             if (this.state.hoverIndex === null) {
@@ -139,9 +71,9 @@ var SearchBox = createReactClass({
         } else if (e.which === 38) { //up
             this.changeHoverIndex(-1);
         }
-    },
+    }
 
-    hitSelected: function (selectedIndex) {
+    hitSelected(selectedIndex) {
 
         this.setState({selectedIndex: selectedIndex});
         var hit = this.state.hits[selectedIndex];
@@ -154,30 +86,31 @@ var SearchBox = createReactClass({
             state.displayHits = false;
         }
         this.setState(state);
-    },
+    }
 
-    handleClickOutside: function (event) {
+    handleClickOutside(event) {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.closeHits();
         }
-    },
+    }
 
-    setWrapperRef: function (node) {
+    setWrapperRef(node) {
         this.wrapperRef = node;
-    },
+    }
 
-    closeHits: function () {
+    closeHits() {
         this.setState({displayHits: false});
-    },
-    openHits: function () {
+    }
+
+    openHits() {
         this.setState({displayHits: true});
-    },
+    }
 
-    setHoverIndex: function (index) {
+    setHoverIndex(index) {
         this.setState({hoverIndex: index});
-    },
+    }
 
-    changeHoverIndex: function (delta) {
+    changeHoverIndex(delta) {
         var currentIndex = this.state.hoverIndex !== null ? this.state.hoverIndex : -1;
         var newIndex = currentIndex + delta;
         if (newIndex >= this.state.hits.length) {
@@ -186,18 +119,18 @@ var SearchBox = createReactClass({
             newIndex = this.state.hits.length - 1;
         }
         this.setHoverIndex(newIndex);
-    },
+    }
 
-    clearResults: function () {
+    clearResults() {
         this.setState({
             showNoResults: false,
             displayHits: false,
             hits: [],
             text: ''
         });
-    },
+    }
 
-    gotResults: function (err, hits) {
+    gotResults(err, hits) {
         if (err) {
             console.log('empty search field');
         } else if (hits.length === 0) {
@@ -215,15 +148,15 @@ var SearchBox = createReactClass({
                 resultStatus: 'ok'
             });
         }
-    },
+    }
 
-    onClick: function () {
+    onClick() {
         if (this.state.hits.length && this.state.text && !this.displayHits) {
             this.setState({displayHits: true});
         }
-    },
+    }
 
-    onChange: function (e) {
+    onChange(e) {
         var value = e.target.value;
         this.setState({text: value});
         if (value.length > 0) {
@@ -239,9 +172,9 @@ var SearchBox = createReactClass({
             this.closeHits();
             this.setState({hits: []});
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return (
             <div className='nk-search' ref={this.setWrapperRef} onClick={this.onClick}>
                 <div className='form-group has-feedback'>
@@ -273,6 +206,13 @@ var SearchBox = createReactClass({
             </div>
         );
     }
-});
+};
 
+SearchBox.defaultProps = {
+    placeholder: 'Søk',
+    noHitsMessage: 'Ingen treff',
+    closeOnSelect: true,
+    targets: ['matrikkelenhet', 'gateadresse'],
+    limits: undefined
+};
 export default SearchBox;
