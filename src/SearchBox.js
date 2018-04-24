@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import search from './searchFunction';
 import SearchIcon from './SearchIcon';
 import CloseBtn from './CloseBtn';
@@ -214,4 +216,16 @@ SearchBox.defaultProps = {
     targets: ['matrikkelenhet', 'gateadresse'],
     limits: undefined
 };
+
+SearchBox.propTypes = {
+    placeholder: PropTypes.string,
+    noHitsMessage: PropTypes.string,
+    closeOnSelect: PropTypes.bool,
+    targets: PropTypes.arrayOf(PropTypes.string),
+    limits: PropTypes.arrayOf(PropTypes.string),
+    hitSelected: PropTypes.func,
+    apiKey: PropTypes.string,
+    NkAuth: PropTypes.func
+};
+
 export default SearchBox;
