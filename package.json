@@ -66,7 +66,6 @@
     "react": "^16.2.0"
   },
   "dependencies": {
-    "create-react-class": "^15.6.3",
     "reqwest": "^2.0.5"
   },
   "peerDependencies": {

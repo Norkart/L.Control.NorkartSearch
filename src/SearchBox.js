@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import createReactClass from 'create-react-class';
 import search from './searchFunction';
 import SearchIcon from './SearchIcon';
 import CloseBtn from './CloseBtn';
