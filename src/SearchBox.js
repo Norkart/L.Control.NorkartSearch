@@ -73,8 +73,7 @@ var HitList = createReactClass({
         }.bind(this));
 
         return (
-            <div className={(this.props.displayHits)
-                ? 'list-group result-list' : 'list-group result-list'}>
+            <div className="list-group result-list">
                 {hits.map(function (hit, idx) {
                     return (
                         <HitElement
@@ -234,7 +233,7 @@ var SearchBox = createReactClass({
             } else if (this.props.NkAuth) {
                 searchAppBackend(value, this.props.targets, this.props.limits, this.props.NkAuth, this.gotResults);
             } else {
-                throw new Error('Ikke tilgang!');
+                throw new Error('Supply either apiKey or auth');
             }
         } else {
             this.closeHits();
