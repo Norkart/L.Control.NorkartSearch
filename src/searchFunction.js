@@ -36,4 +36,19 @@ function search(text, targets, limits, extraHeaders, callback) {
     });
 }
 
-export default search;
+function searchAppBackend(value, targets, limits, auth, gotResults) {
+    auth.getToken(function (err, token) {
+        var h = {
+            'Authorization': 'Bearer ' + token,
+            'X-WAAPI-Profile': auth.config.profile
+        };
+        search(value, targets, limits, h, gotResults);
+    });
+}
+
+function searchApiKey(value, targets, limits, token, gotResults) {
+    var h = {'X-WAAPI-Token': token};
+    search(value, targets, limits, h, gotResults);
+}
+
+export {searchAppBackend, searchApiKey};

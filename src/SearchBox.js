@@ -1,25 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import search from './searchFunction';
+import {searchAppBackend, searchApiKey} from './searchFunction';
 import SearchIcon from './SearchIcon';
 import CloseBtn from './CloseBtn';
 import HitList from './HitList';
 
-function searchAppBackend(value, targets, limits, auth, gotResults) {
-    auth.getToken(function (err, token) {
-        var h = {
-            'Authorization': 'Bearer ' + token,
-            'X-WAAPI-Profile': auth.config.profile
-        };
-        search(value, targets, limits, h, gotResults);
-    });
-}
 
-function searchApiKey(value, targets, limits, token, gotResults) {
-    var h = {'X-WAAPI-Token': token};
-    search(value, targets, limits, h, gotResults);
-}
 
 class SearchBox extends Component {
 
@@ -38,11 +25,12 @@ class SearchBox extends Component {
         this.handleClickOutside = this.handleClickOutside.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.onClick = this.onClick.bind(this);
         this.gotResults = this.gotResults.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.hitSelected = this.hitSelected.bind(this);
         this.clearResults = this.clearResults.bind(this);
+        this.setHoverIndex = this.setHoverIndex.bind(this);
+        this.openHits = this.openHits.bind(this);
     }
 
     componentDidMount() {
@@ -57,11 +45,7 @@ class SearchBox extends Component {
         //enter or tab, and selected from menu
         if (e.which === 13 || e.which === 9) {
             if (this.state.hoverIndex === null) {
-                if (this.state.hits.length === 1) {
-                    this.hitSelected(0); //choose first element if only one result present
-                } else {
-                    this.setState({resultStatus: 'error'});
-                }
+                this.hitSelected(0);
             } else {
                 this.setState({resultStatus: 'ok'});
                 var selectedIndex = this.state.hoverIndex;
@@ -104,7 +88,9 @@ class SearchBox extends Component {
     }
 
     openHits() {
-        this.setState({displayHits: true});
+        if (this.state.hits.length && this.state.text && !this.displayHits) {
+            this.setState({displayHits: true});
+        }
     }
 
     setHoverIndex(index) {
@@ -133,7 +119,15 @@ class SearchBox extends Component {
 
     gotResults(err, hits) {
         if (err) {
-            console.log('empty search field');
+            console.error(err);
+            this.setState({
+                hits: [],
+                displayHits: false,
+                hoverIndex: null,
+                selectedIndex: null,
+                showNoResults: false,
+                resultStatus: 'error'
+            });
         } else if (hits.length === 0) {
             this.setState({
                 displayHits: false,
@@ -148,12 +142,6 @@ class SearchBox extends Component {
                 showNoResults: false,
                 resultStatus: 'ok'
             });
-        }
-    }
-
-    onClick() {
-        if (this.state.hits.length && this.state.text && !this.displayHits) {
-            this.setState({displayHits: true});
         }
     }
 
@@ -177,11 +165,14 @@ class SearchBox extends Component {
 
     render() {
         return (
-            <div className='nk-search' ref={this.setWrapperRef} onClick={this.onClick}>
+            <div
+                className='nk-search'
+                ref={this.setWrapperRef}
+                onKeyDown={this.onKeyDown}
+                onClick={this.openHits}>
                 <div className='form-group has-feedback'>
                     <input
                         onChange={this.onChange}
-                        onKeyDown={this.onKeyDown}
                         type='text'
                         value={this.state.text}
                         className={'search-input ' + this.state.resultStatus}

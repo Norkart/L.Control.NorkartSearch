@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import SearchBox from './SearchBox';
 
-import searchFunction from './searchFunction';
+import {searchApiKey} from './searchFunction';
 
 jest.mock('./searchFunction');
 
@@ -134,7 +134,7 @@ describe('search results', () => {
         expect(wrapper.find('div.result-list').children().length).toBe(3);
         expect(wrapper.find('input').props().value).toEqual(searchString);
 
-        searchFunction.mockClear();
+        searchApiKey.mockClear();
         wrapper.find('input').simulate('change', {target: {value: ''}});
 
         //check the results
@@ -142,7 +142,20 @@ describe('search results', () => {
         expect(wrapper.find('input').props().value).toEqual('');
 
         //check that we do not call search function
-        expect(searchFunction).toHaveBeenCalledTimes(0);
+        expect(searchApiKey).toHaveBeenCalledTimes(0);
+    });
+
+    it('shows error on error from search', () => {
+        const searchString = 'test_err';
+
+        const wrapper = mount(<SearchBox apiKey="test" />);
+
+        //trigger the onChange
+        wrapper.find('input').simulate('change', {target: {value: searchString}});
+
+        //check the results
+        expect(wrapper.find('div.result-list').children().length).toBe(0);
+        expect(wrapper.find('input').render().hasClass('error')).toBe(true);
     });
 
 });
@@ -151,7 +164,6 @@ describe('selecting results', () => {
 
     it('calls callback when selecting a result', done => {
         const searchString = 'test';
-
 
         const hitSelected = (hit) => {
             expect(hit.Text).toBe('test 1');
@@ -299,5 +311,39 @@ describe('arrow navigation', () => {
         wrapper.find('input').simulate('keyDown', {which: 40});
         wrapper.find('input').simulate('keyDown', {which: 9});
     });
+
+    it('selects first item when pressing enter', done => {
+        const searchString = 'test';
+
+        const hitSelected = (hit) => {
+            expect(hit.Text).toBe('test 1');
+            done();
+        };
+
+        const wrapper = mount(<SearchBox apiKey="test" hitSelected={hitSelected}/>);
+
+        //trigger the onChange
+        wrapper.find('input').simulate('change', {target: {value: searchString}});
+
+        wrapper.find('input').simulate('keyDown', {which: 13});
+    });
+});
+
+describe('mouse navigation', () => {
+
+    it('highlights elements on mouseenter', () => {
+        const searchString = 'test';
+
+        const wrapper = mount(<SearchBox apiKey="test" />);
+
+        //trigger the onChange
+        wrapper.find('input').simulate('change', {target: {value: searchString}});
+
+        wrapper.find('div.result-list').childAt(0).simulate('mouseenter');
+        expect(wrapper.find('div.result-list').childAt(0).render().hasClass('hover')).toBe(true);
+        expect(wrapper.find('div.result-list').childAt(1).render().hasClass('hover')).toBe(false);
+        expect(wrapper.find('div.result-list').childAt(2).render().hasClass('hover')).toBe(false);
+    });
+
 });
 
