@@ -184,11 +184,11 @@ class SearchBox extends Component {
                         onKeyDown={this.onKeyDown}
                         type='text'
                         value={this.state.text}
-                        className={'form-control search ' + this.state.resultStatus}
+                        className={'search-input ' + this.state.resultStatus}
                         autoComplete='off'
                         onFocus = {this.openHits}
                         placeholder={this.props.placeholder}/>
-                    <span className='form-control-feedback'>
+                    <span className='search-input-icons'>
                         {this.state.hits.length
                             ? <CloseBtn onClick={this.clearResults}/>
                             : null}

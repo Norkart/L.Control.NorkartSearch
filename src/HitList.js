@@ -15,7 +15,7 @@ export default function HitList(props) {
     }
 
     return (
-        <div className="list-group result-list">
+        <div className="result-list">
             {props.hits.map(function (hit, idx) {
                 return (
                     <HitElement

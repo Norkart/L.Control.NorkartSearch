@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HitElement(props) {
 
-    let className = 'list-group-item';
+    let className = 'result-item';
     if (props.hover && !props.selected) {
         className += ' hover';
     }
