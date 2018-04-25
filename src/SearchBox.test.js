@@ -2,6 +2,8 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import SearchBox from './SearchBox';
 
+import searchFunction from './searchFunction';
+
 jest.mock('./searchFunction');
 
 it('renders initially', () => {
@@ -116,9 +118,31 @@ describe('search results', () => {
 
         //check the results
         expect(wrapper.find('div.result-list').children().length).toBe(3);
-
         expect(wrapper.find('div.result-list').children().first().text()).toBe('test 1');
         expect(wrapper.find('div.result-list').children().last().text()).toBe('test 3');
+    });
+
+    it('clears result when searching for empty string', () => {
+        const searchString = 'test';
+
+        const wrapper = mount(<SearchBox apiKey="test" />);
+
+        //trigger the onChange
+        wrapper.find('input').simulate('change', {target: {value: searchString}});
+
+        //check the results
+        expect(wrapper.find('div.result-list').children().length).toBe(3);
+        expect(wrapper.find('input').props().value).toEqual(searchString);
+
+        searchFunction.mockClear();
+        wrapper.find('input').simulate('change', {target: {value: ''}});
+
+        //check the results
+        expect(wrapper.find('div.result-list').children().length).toBe(0);
+        expect(wrapper.find('input').props().value).toEqual('');
+
+        //check that we do not call search function
+        expect(searchFunction).toHaveBeenCalledTimes(0);
     });
 
 });
@@ -127,6 +151,7 @@ describe('selecting results', () => {
 
     it('calls callback when selecting a result', done => {
         const searchString = 'test';
+
 
         const hitSelected = (hit) => {
             expect(hit.Text).toBe('test 1');
@@ -137,11 +162,10 @@ describe('selecting results', () => {
 
         //trigger the onChange
         wrapper.find('input').simulate('change', {target: {value: searchString}});
-
-        //check the results
         expect(wrapper.find('div.result-list').children().length).toBe(3);
 
-        wrapper.find('div.result-list').children().first().simulate('click');
+        //select the element
+        wrapper.find('div.result-list').childAt(0).simulate('click');
     });
 
     it('closes list when selecting a result', () => {
@@ -151,12 +175,9 @@ describe('selecting results', () => {
 
         //trigger the onChange
         wrapper.find('input').simulate('change', {target: {value: searchString}});
-
-        //check the results
         expect(wrapper.find('div.result-list').children().length).toBe(3);
 
         wrapper.find('div.result-list').children().first().simulate('click');
-
         expect(wrapper.find('div.result-list').children().length).toBe(0);
     });
 

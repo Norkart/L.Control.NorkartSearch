@@ -19,7 +19,7 @@ export default function HitList(props) {
             {props.hits.map(function (hit, idx) {
                 return (
                     <HitElement
-                        key={hit.id}
+                        key={hit.Id}
                         text={hit.Text}
                         index={idx}
                         hover={idx === props.hoverIndex}

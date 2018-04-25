@@ -1,4 +1,4 @@
-export default function search(text, targets, limits, extraHeaders, callback) {
+export default jest.fn(function (text, targets, limits, extraHeaders, callback) {
     if (text === 'test') {
         const data = [
             {Id: 1, Text: 'test 1'},
@@ -9,4 +9,4 @@ export default function search(text, targets, limits, extraHeaders, callback) {
     } else if (text === 'test_nores') {
         callback(null, []);
     }
-}
+});
