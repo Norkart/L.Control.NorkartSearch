@@ -6,8 +6,6 @@ import SearchIcon from './SearchIcon';
 import CloseBtn from './CloseBtn';
 import HitList from './HitList';
 
-
-
 class SearchBox extends Component {
 
     constructor(props) {

@@ -1,5 +1,7 @@
 import reqwest from 'reqwest';
 
+const BASE_URL = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/';
+
 function extend(to, from) {
    for (var key in from) {
         if (from.hasOwnProperty(key)) {
@@ -9,18 +11,29 @@ function extend(to, from) {
    return to;
 }
 
-function search(text, targets, limits, extraHeaders, callback) {
-      var baseUrl = '//www.webatlas.no/WAAPI-FritekstSok/suggest/kommunecustom/?Targets=';
-      var targetString = targets.join(',');
-      var limitsString = (limits) ? '&kommuneLimit=' + limits.join(',') : '';
-      var url = baseUrl + targetString + limitsString + '&Query=' + text;
+function buildQueryString(params) {
 
-      var headers = extend(
-         {'Accept': 'application/json; charset=utf-8'},
-         extraHeaders
-      );
+    return Object.keys(params).map(key =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+    ).join('&');
+
+}
+
+function search(text, targets, limits, extraHeaders, callback) {
+    var params = {
+        'Query': text,
+        'Targets': targets.join(',')
+    };
+    if (limits) {
+        params['kommuneLimit'] = limits.join(',');
+    }
+
+    var headers = extend(
+        {'Accept': 'application/json; charset=utf-8'},
+        extraHeaders
+    );
     reqwest({
-        url: url,
+        url: `${BASE_URL}?${buildQueryString(params)}`,
         crossOrigin: true,
         type: 'json',
         method: 'get',
