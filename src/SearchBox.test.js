@@ -355,7 +355,7 @@ describe('text', () => {
         //check that text is updated
         expect(wrapper.find('input').props().value).toEqual(searchString);
     });
-    it.only('sets text from props on update', () => {
+    it('sets text from props on update', () => {
         const searchString = 'test';
         const wrapper = mount(<SearchBox apiKey="test"/>);
         expect(wrapper.find('input').props().value).toEqual('');

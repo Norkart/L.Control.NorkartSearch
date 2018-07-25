@@ -219,7 +219,7 @@ SearchBox.propTypes = {
     limits: PropTypes.arrayOf(PropTypes.string),
     hitSelected: PropTypes.func,
     apiKey: PropTypes.string,
-    NkAuth: PropTypes.func,
+    NkAuth: PropTypes.object,
     searchString: PropTypes.string
 };
 
