@@ -18,7 +18,7 @@ it('renders nothing when hits, but displayHits=false', () => {
 });
 
 it('renders error when showNoResults=true', () => {
-    const message = 'noHitsMessage'
+    const message = 'noHitsMessage';
     const wrapper = shallow(<HitList hits={[]} showNoResults={true} noHitsMessage={message}/>);
     expect(wrapper.hasClass('result-error')).toBe(true);
     expect(wrapper.text()).toEqual(message);

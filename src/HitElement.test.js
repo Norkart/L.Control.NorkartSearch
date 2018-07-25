@@ -35,7 +35,7 @@ it('gives active class precedence over hover class', () => {
 it('calls click callback', () => {
     const callback = jest.fn();
     const preventDefault = jest.fn();
-    const stopPropagation = jest.fn()
+    const stopPropagation = jest.fn();
     const text = 'text';
     const index = 10;
     var wrapper = shallow(<HitElement text={text} hitSelected={callback} index={index}/>);
@@ -51,7 +51,7 @@ it('calls click callback', () => {
 
 it('calls mouseover callback', () => {
     const callback = jest.fn();
-    
+
     const text = 'text';
     const index = 10;
     var wrapper = shallow(<HitElement text={text} onEnter={callback} index={index}/>);
