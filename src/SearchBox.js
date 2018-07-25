@@ -11,7 +11,7 @@ class SearchBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: '',
+            text: props.searchString || '',
             hits: [],
             hoverIndex: null,
             selectedIndex: null,
@@ -29,6 +29,12 @@ class SearchBox extends Component {
         this.clearResults = this.clearResults.bind(this);
         this.setHoverIndex = this.setHoverIndex.bind(this);
         this.openHits = this.openHits.bind(this);
+    }
+
+    componentDidUpdate() {
+        if (this.props.searchString && this.props.searchString !== this.state.text) {
+            this.setState({text: this.props.searchString});
+        }
     }
 
     componentDidMount() {
@@ -117,7 +123,6 @@ class SearchBox extends Component {
 
     gotResults(err, hits) {
         if (err) {
-            console.error(err);
             this.setState({
                 hits: [],
                 displayHits: false,
@@ -214,7 +219,8 @@ SearchBox.propTypes = {
     limits: PropTypes.arrayOf(PropTypes.string),
     hitSelected: PropTypes.func,
     apiKey: PropTypes.string,
-    NkAuth: PropTypes.func
+    NkAuth: PropTypes.func,
+    searchString: PropTypes.string
 };
 
 export default SearchBox;

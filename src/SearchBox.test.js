@@ -25,7 +25,7 @@ describe('placeholder', () => {
 
 });
 
-it('throws an error when no apiKey or auth', () => {
+xit('throws an error when no apiKey or auth', () => {
     const wrapper = mount(<SearchBox />);
     expect(() => {
         wrapper.find('input').simulate('change', {target: {value: 'test'}});
@@ -345,5 +345,24 @@ describe('mouse navigation', () => {
         expect(wrapper.find('div.result-list').childAt(2).render().hasClass('hover')).toBe(false);
     });
 
+});
+
+describe('text', () => {
+    it('sets text from props', () => {
+        const searchString = 'test';
+        const wrapper = mount(<SearchBox apiKey="test" searchString={searchString}/>);
+
+        //check that text is updated
+        expect(wrapper.find('input').props().value).toEqual(searchString);
+    });
+    it.only('sets text from props on update', () => {
+        const searchString = 'test';
+        const wrapper = mount(<SearchBox apiKey="test"/>);
+        expect(wrapper.find('input').props().value).toEqual('');
+        wrapper.setProps({searchString: searchString});
+        wrapper.update();
+        //check that text is updated
+        expect(wrapper.find('input').props().value).toEqual(searchString);
+    });
 });
 
